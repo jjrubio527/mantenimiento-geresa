@@ -80,8 +80,8 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// URL DE TU GOOGLE APPS SCRIPT
-const scriptURL = 'AQUI_VA_TU_URL_DE_GOOGLE_APPS_SCRIPT';
+// URL DE TU GOOGLE APPS SCRIPT// URL DE TU GOOGLE APPS SCRIPT
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyRaI6DQAkXCF8-f3C4C-tH3Nm4UW0yBwWnm2QPmyS0BZMIBhSjT3M9rYBytptqV9_a/exec';
 
 // ENVÍO CON PANTALLA TRANSPARENTE DE CARGA Y MODAL
 document.getElementById('mantenimientoForm').addEventListener('submit', function(e) {
@@ -103,14 +103,7 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
         prioridad: document.getElementById('prioridad').value
     };
 
-    if (scriptURL === 'AQUI_VA_TU_URL_DE_GOOGLE_APPS_SCRIPT') {
-        setTimeout(() => {
-            loadingOverlay.style.display = 'none';
-            modalExito.style.display = 'flex';
-        }, 1200);
-        return;
-    }
-
+    // ENVÍO DIRECTO A GOOGLE SHEETS
     fetch(scriptURL, {
         method: 'POST',
         mode: 'no-cors',
