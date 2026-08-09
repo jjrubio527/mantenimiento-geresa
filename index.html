@@ -4,93 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unidad Funcional de Mantenimiento - GERESA Lambayeque</title>
-
-    <!-- ESTILOS CSS -->
     <link rel="stylesheet" href="styles.css">
-
-    <!-- ICONO DE LA PESTAÑA DEL NAVEGADOR (FAVICON) -->
-    <link rel="icon" type="image/png" href="imagenes/logo_mantenimiento2026.png">
-
+    <link rel="icon" type="image/png" href="imagenes/LOGO_MANTENIMIENTO.png">
 </head>
 <body>
 
+<!-- PANTALLA DE CARGA CON CÍRCULO GIRANDO (OVERLAY) -->
+<div id="loadingOverlay" class="overlay-loading">
+    <div class="spinner"></div>
+    <p>Enviando reporte a la UFMIES...</p>
+</div>
+
+<!-- VENTANA FLOTANTE DE ÉXITO -->
+<div id="modalExito" class="modal-exito">
+    <div class="modal-card">
+        <div class="check-icon">✅</div>
+        <h2>¡Reporte Registrado con Éxito!</h2>
+        <p>La información ha sido enviada correctamente a la hoja de registro de la Unidad Funcional de Mantenimiento.</p>
+        <button id="btnNuevoRegistro" class="btn-reset">REGISTRAR OTRA RESPUESTA</button>
+    </div>
+</div>
+
 <div class="layout-wrapper">
 
-    <!-- PANEL IZQUIERDO: GUÍA DE LLENADO MÁS ANCHA -->
-    <aside class="sidebar sidebar-left">
-        <div class="info-card">
-            <div class="card-header-blue">
-                GUÍA Y LEYENDA PARA EL CORRECTO LLENADO
-            </div>
-            <p class="subtitle-text">
-                Estimado personal del EE.SS.: Utilice este cuadro de referencia para clasificar correctamente los requerimientos.
-            </p>
-
-            <div class="table-container">
-                <table class="guide-table">
-                    <thead>
-                        <tr>
-                            <th>Categoría</th>
-                            <th>Ejemplos de Equipos y Bienes</th>
-                            <th>Definición y Recomendaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="cat-title">Equipamiento Biomédico</td>
-                            <td>
-                                <ul>
-                                    <li>Monitor de funciones vitales, Aspirador de secreciones</li>
-                                    <li>Electrocardiógrafo / Oxímetro, Ecógrafo / Rayos X</li>
-                                    <li>Esterilizador a vapor / Autoclave, Centrífuga</li>
-                                    <li>Cuna de calor radiante, Unidad dental completa, entre otros </li>
-                                </ul>
-                            </td>
-                            <td>Atención médica, diagnóstico, tratamiento o rehabilitación. Colocar siempre Marca, Modelo y Código Patrimonial.</td>
-                        </tr>
-                        <tr>
-                            <td class="cat-title">Mobiliario Clínico</td>
-                            <td>
-                                <ul>
-                                    <li>Camillas de examen y transporte, Camas hospitalarias</li>
-                                    <li>Biombos, escalinatas, Sillas de ruedas, Portasueros</li>
-                                    <li>Mesas de mayo / noche, Gabinetes de curaciones</li>
-                                    <li>Sillones de extracción / Odontológicos, entre otros </li>
-                                </ul>
-                            </td>
-                            <td>Muebles adaptados para uso directo con pacientes dentro de consultorios, tópicos, parto y hospitalización.</td>
-                        </tr>
-                        <tr>
-                            <td class="cat-title">Equipo Electromecánico</td>
-                            <td>
-                                <ul>
-                                    <li>Refrigeradoras y congeladoras de vacunas</li>
-                                    <li>Compresoras de aire medicinal / dental</li>
-                                    <li>Grupos electrógenos / Generadores, Bombas de agua</li>
-                                    <li>Aire acondicionado, entre otros </li>
-                                </ul>
-                            </td>
-                            <td>Maquinarias e instalaciones eléctricas/mecánicas críticas para el funcionamiento seguro del centro.</td>
-                        </tr>
-                        <tr>
-                            <td class="cat-title">Infraestructura</td>
-                            <td>
-                                <ul>
-                                    <li>Deterioro o fisuras en paredes y techos, Pintura</li>
-                                    <li>Filtraciones de agua, Tuberías con fuga, SS.HH.</li>
-                                    <li>Puertas, cerraduras, ventanas, Techos calamina</li>
-                                    <li>Cableado eléctrico expuesto, tomacorrientes, entre otros </li>
-                                </ul>
-                            </td>
-                            <td>Instalaciones físicas. En descripción colocar ubicación exacta. En Marca/Modelo/Código colocar N/A.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </aside>
-
-    <!-- PANEL CENTRAL: FORMULARIO PRINCIPAL -->
+    <!-- PANEL CENTRAL: FORMULARIO PRINCIPAL (PRIORIDAD EN CELULAR) -->
     <main class="main-card">
         
         <!-- ENCABEZADO INSTITUCIONAL -->
@@ -184,11 +121,81 @@
 
             <button type="submit" id="btnEnviar">REGISTRAR Y ENVIAR REPORTE</button>
         </form>
-
-        <div id="mensajeExito" class="alert-success">
-            ✅ ¡Reporte enviado con éxito a la Unidad Funcional de Mantenimiento!
-        </div>
     </main>
+
+    <!-- PANEL IZQUIERDO: GUÍA DE LLENADO -->
+    <aside class="sidebar sidebar-left">
+        <div class="info-card">
+            <div class="card-header-blue">
+                GUÍA Y LEYENDA PARA EL CORRECTO LLENADO
+            </div>
+            <p class="subtitle-text">
+                Estimado personal del EE.SS.: Utilice este cuadro de referencia para clasificar correctamente los requerimientos.
+            </p>
+
+            <div class="table-container">
+                <table class="guide-table">
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Ejemplos de Equipos y Bienes</th>
+                            <th>Definición y Recomendaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cat-title">Equipamiento Biomédico</td>
+                            <td>
+                                <ul>
+                                    <li>Monitor de funciones vitales, Aspirador de secreciones</li>
+                                    <li>Electrocardiógrafo / Oxímetro, Ecógrafo / Rayos X</li>
+                                    <li>Esterilizador a vapor / Autoclave, Centrífuga</li>
+                                    <li>Cuna de calor radiante, Unidad dental completa</li>
+                                </ul>
+                            </td>
+                            <td>Atención médica, diagnóstico, tratamiento o rehabilitación. Colocar siempre Marca, Modelo y Código Patrimonial.</td>
+                        </tr>
+                        <tr>
+                            <td class="cat-title">Mobiliario Clínico</td>
+                            <td>
+                                <ul>
+                                    <li>Camillas de examen y transporte, Camas hospitalarias</li>
+                                    <li>Biombos, escalinatas, Sillas de ruedas, Portasueros</li>
+                                    <li>Mesas de mayo / noche, Gabinetes de curaciones</li>
+                                    <li>Sillones de extracción / Odontológicos</li>
+                                </ul>
+                            </td>
+                            <td>Muebles adaptados para uso directo con pacientes dentro de consultorios, tópicos, parto y hospitalización.</td>
+                        </tr>
+                        <tr>
+                            <td class="cat-title">Equipo Electromecánico</td>
+                            <td>
+                                <ul>
+                                    <li>Refrigeradoras y congeladoras de vacunas</li>
+                                    <li>Compresoras de aire medicinal / dental</li>
+                                    <li>Grupos electrógenos / Generadores, Bombas de agua</li>
+                                    <li>Aire acondicionado, Sistemas de presión constante</li>
+                                </ul>
+                            </td>
+                            <td>Maquinarias e instalaciones eléctricas/mecánicas críticas para el funcionamiento seguro del centro.</td>
+                        </tr>
+                        <tr>
+                            <td class="cat-title">Infraestructura</td>
+                            <td>
+                                <ul>
+                                    <li>Deterioro o fisuras en paredes y techos, Pintura</li>
+                                    <li>Filtraciones de agua, Tuberías con fuga, SS.HH.</li>
+                                    <li>Puertas, cerraduras, ventanas, Techos calamina</li>
+                                    <li>Cableado eléctrico expuesto, tomacorrientes</li>
+                                </ul>
+                            </td>
+                            <td>Instalaciones físicas. En descripción colocar ubicación exacta. En Marca/Modelo/Código colocar N/A.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </aside>
 
     <!-- PANEL DERECHO: LEYENDA Y CONSULTAS -->
     <aside class="sidebar sidebar-right">

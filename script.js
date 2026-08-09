@@ -24,13 +24,16 @@ const eessLista = [
 
 const input = document.getElementById('eessInput');
 const results = document.getElementById('searchResults');
+const loadingOverlay = document.getElementById('loadingOverlay');
+const modalExito = document.getElementById('modalExito');
+const btnNuevoRegistro = document.getElementById('btnNuevoRegistro');
 
-// FUNCIÓN PARA QUITAR TILDES Y ACENTOS
+// QUITAR TILDES
 function quitarTildes(texto) {
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-// BUSCADOR EN TIEMPO REAL CON OPCIÓN DE MODO LIBRE
+// BUSCADOR EN TIEMPO REAL
 input.addEventListener('input', function() {
     const rawVal = this.value;
     const val = quitarTildes(rawVal.toLowerCase().trim());
@@ -56,13 +59,12 @@ input.addEventListener('input', function() {
             results.appendChild(div);
         });
     } else {
-        // SI NO ENCUENTRA EL ESTABLECIMIENTO EN LA LISTA
         const div = document.createElement('div');
-        div.innerHTML = `➕ Agregar: <strong>"${rawVal}"</strong> (No figura en la lista)`;
+        div.innerHTML = `➕ Usar: <strong>"${rawVal}"</strong> (No figura en la lista)`;
         div.style.color = '#2563eb';
         div.style.fontWeight = 'bold';
         div.onclick = function() {
-            input.value = rawVal; // Asigna lo que el usuario escribió manualmente
+            input.value = rawVal;
             results.style.display = 'none';
         };
         results.appendChild(div);
@@ -71,7 +73,7 @@ input.addEventListener('input', function() {
     results.style.display = 'block';
 });
 
-// OCULTAR SI HACE CLIC FUERA
+// OCULTAR AL HACER CLIC FUERA
 document.addEventListener('click', function(e) {
     if (e.target !== input) {
         results.style.display = 'none';
@@ -79,15 +81,14 @@ document.addEventListener('click', function(e) {
 });
 
 // URL DE TU GOOGLE APPS SCRIPT
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyRaI6DQAkXCF8-f3C4C-tH3Nm4UW0yBwWnm2QPmyS0BZMIbhSjT3M9rYBytptqV9_a/exec';
+const scriptURL = 'AQUI_VA_TU_URL_DE_GOOGLE_APPS_SCRIPT';
 
-// LÓGICA DE ENVÍO DEL FORMULARIO
+// ENVÍO CON PANTALLA TRANSPARENTE DE CARGA Y MODAL
 document.getElementById('mantenimientoForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const btn = document.getElementById('btnEnviar');
-    btn.textContent = 'ENVIANDO...';
-    btn.disabled = true;
+    // Muestra pantalla de carga transparente con el círculo girando
+    loadingOverlay.style.display = 'flex';
 
     const formData = {
         eess: document.getElementById('eessInput').value,
@@ -103,13 +104,10 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
     };
 
     if (scriptURL === 'AQUI_VA_TU_URL_DE_GOOGLE_APPS_SCRIPT') {
-        document.getElementById('mensajeExito').style.display = 'block';
-        this.reset();
-        btn.textContent = 'REGISTRAR Y ENVIAR REPORTE';
-        btn.disabled = false;
         setTimeout(() => {
-            document.getElementById('mensajeExito').style.display = 'none';
-        }, 4000);
+            loadingOverlay.style.display = 'none';
+            modalExito.style.display = 'flex';
+        }, 1200);
         return;
     }
 
@@ -120,17 +118,18 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
         body: JSON.stringify(formData)
     })
     .then(() => {
-        document.getElementById('mantenimientoForm').reset();
-        document.getElementById('mensajeExito').style.display = 'block';
-        btn.textContent = 'REGISTRAR Y ENVIAR REPORTE';
-        btn.disabled = false;
-        setTimeout(() => {
-            document.getElementById('mensajeExito').style.display = 'none';
-        }, 5000);
+        loadingOverlay.style.display = 'none';
+        modalExito.style.display = 'flex';
     })
     .catch(error => {
-        alert('Ocurrió un error al enviar el formulario.');
-        btn.textContent = 'REGISTRAR Y ENVIAR REPORTE';
-        btn.disabled = false;
+        loadingOverlay.style.display = 'none';
+        alert('Ocurrió un error al enviar el reporte. Por favor reintente.');
     });
+});
+
+// BOTÓN PARA REGISTRAR OTRO REPORTE / NUEVA SOLICITUD
+btnNuevoRegistro.addEventListener('click', function() {
+    document.getElementById('mantenimientoForm').reset();
+    modalExito.style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
