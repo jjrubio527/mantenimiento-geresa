@@ -1,0 +1,136 @@
+// LISTA COMPLETA DE ESTABLECIMIENTOS (RED CHICLAYO, FERREÑAFE Y LAMBAYEQUE)
+const eessLista = [
+    "C.S. Chiclayo", "C.S. José Olaya", "C.S. San Antonio", "C.S. Jorge Chávez", "C.S. Verónica Stack de Tomis (Túpac Amaru)",
+    "C.S. José Quiñones Gonzales", "P.S. Cruz de la Esperanza", "C.S. Cerropón", "C.S. José Leonardo Ortiz", "C.S. Pedro Pablo Atusparias",
+    "C.S. Paul Harris", "P.S. Culpón", "P.S. Santa Ana", "P.S. Villa Hermosa", "C.S. Elohim JLO", "C.S. La Victoria",
+    "P.S. La Victoria Sector II - María Jesús", "P.S. Antonio Raymondi", "C.S. Víctor Enrique Tirado Bonilla (Chongoyape)",
+    "P.S. Pampa Grande", "P.S. Las Colmenas", "P.S. Huaca Blanca", "C.S. Pomalca", "P.S. San Luis", "P.S. San Antonio (Pomalca)",
+    "C.S. Picsi", "P.S. Capote", "C.S. Juan José Cruz Venegas", "C.S. Pimentel", "P.S. Santa Rosa", "C.S. Monsefú", "C.S. Ciudad Eten",
+    "P.S. Puerto Eten", "C.S. Reque", "P.S. Montegrande", "P.S. Las Delicias", "P.S. Franco Basaglia - Reque", "C.S. Oyotún",
+    "P.S. El Espinal", "P.S. Pan de Azúcar", "P.S. La Compuerta", "P.S. Nueva Arica", "C.S. Cayaltí", "P.S. Sipán", "C.S. Zaña",
+    "P.S. Collique", "P.S. Guayaquil", "P.S. Virgen de las Mercedes (La Otra Banda)", "P.S. Saltur", "C.S. Pósope Alto", "C.S. Tumán",
+    "P.S. Pampa La Victoria", "C.S. Lagunas - Mocupe Nuevo", "P.S. Mocupe Viejo", "P.S. Lagunas", "P.S. Pueblo Libre",
+    "Hospital Referencial Ferreñafe", "C.S. Francisco Muro Pacheco (Pueblo Nuevo)", "C.S. Señor de la Justicia", "C.S. Pítipo",
+    "P.S. Batangrande", "P.S. Cachinche", "C.S. Manuel Antonio Mesones Muro", "C.S. Inkawasi", "C.S. Moyán", "P.S. Laquipampa",
+    "P.S. Cruz Loma", "P.S. Huayrul", "P.S. Lanchipampa", "P.S. Uyurpampa", "P.S. Canchachalá", "P.S. Kongacha", "P.S. Marayhuaca",
+    "P.S. Totoras", "P.S. Cañaris", "P.S. Huacapampa", "C.S. Toribia Castro Chirinos", "C.S. San José", "P.S. Bodegones",
+    "P.S. Ciudad de Dios (Juan Tomis Stack)", "C.S. Mórrope", "P.S. El Romero", "P.S. Cruz de Paredones", "P.S. Arbolsol",
+    "P.S. Annape", "C.S. Íllimo", "P.S. Chirimoyo", "P.S. Granja Sasape", "P.S. Los Bances", "P.S. Los Sánchez", "C.S. Pacora",
+    "C.S. Jayanca", "P.S. La Viña - Jayanca", "C.S. Motupe", "P.S. Anchovira", "P.S. Marripón", "P.S. El Arrozal", "P.S. Chochope",
+    "C.S. Salas", "C.S. Colaya", "P.S. Kerguer", "P.S. El Sauce", "C.S. Olmos", "P.S. Calera Santa Rosa", "P.S. El Puente",
+    "P.S. Ancol Chico", "P.S. Insculás", "P.S. Querpón", "P.S. Tres Batanes", "P.S. Capilla Central", "P.S. Ñaupe", "P.S. El Virrey",
+    "P.S. Las Norias", "P.S. Corral de Arena", "P.S. Mocape"
+];
+
+const input = document.getElementById('eessInput');
+const results = document.getElementById('searchResults');
+
+// FUNCIÓN PARA QUITAR TILDES Y ACENTOS
+function quitarTildes(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+// BUSCADOR EN TIEMPO REAL CON OPCIÓN DE MODO LIBRE
+input.addEventListener('input', function() {
+    const rawVal = this.value;
+    const val = quitarTildes(rawVal.toLowerCase().trim());
+    results.innerHTML = '';
+    
+    if (!val) {
+        results.style.display = 'none';
+        return;
+    }
+
+    const filtered = eessLista.filter(item => 
+        quitarTildes(item.toLowerCase()).includes(val)
+    );
+
+    if (filtered.length > 0) {
+        filtered.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = item;
+            div.onclick = function() {
+                input.value = item;
+                results.style.display = 'none';
+            };
+            results.appendChild(div);
+        });
+    } else {
+        // SI NO ENCUENTRA EL ESTABLECIMIENTO EN LA LISTA
+        const div = document.createElement('div');
+        div.innerHTML = `➕ Agregar: <strong>"${rawVal}"</strong> (No figura en la lista)`;
+        div.style.color = '#2563eb';
+        div.style.fontWeight = 'bold';
+        div.onclick = function() {
+            input.value = rawVal; // Asigna lo que el usuario escribió manualmente
+            results.style.display = 'none';
+        };
+        results.appendChild(div);
+    }
+    
+    results.style.display = 'block';
+});
+
+// OCULTAR SI HACE CLIC FUERA
+document.addEventListener('click', function(e) {
+    if (e.target !== input) {
+        results.style.display = 'none';
+    }
+});
+
+// URL DE TU GOOGLE APPS SCRIPT
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyRaI6DQAkXCF8-f3C4C-tH3Nm4UW0yBwWnm2QPmyS0BZMIbhSjT3M9rYBytptqV9_a/exec';
+
+// LÓGICA DE ENVÍO DEL FORMULARIO
+document.getElementById('mantenimientoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const btn = document.getElementById('btnEnviar');
+    btn.textContent = 'ENVIANDO...';
+    btn.disabled = true;
+
+    const formData = {
+        eess: document.getElementById('eessInput').value,
+        sisgedo: document.getElementById('sisgedo').value,
+        categoria: document.getElementById('categoria').value,
+        equipo: document.getElementById('equipo').value,
+        marca: document.getElementById('marca').value || 'N/A',
+        modelo: document.getElementById('modelo').value || 'N/A',
+        codigo: document.getElementById('codigo').value || 'N/A',
+        condicion: document.getElementById('condicion').value,
+        descripcion: document.getElementById('descripcion').value,
+        prioridad: document.getElementById('prioridad').value
+    };
+
+    if (scriptURL === 'AQUI_VA_TU_URL_DE_GOOGLE_APPS_SCRIPT') {
+        document.getElementById('mensajeExito').style.display = 'block';
+        this.reset();
+        btn.textContent = 'REGISTRAR Y ENVIAR REPORTE';
+        btn.disabled = false;
+        setTimeout(() => {
+            document.getElementById('mensajeExito').style.display = 'none';
+        }, 4000);
+        return;
+    }
+
+    fetch(scriptURL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+    })
+    .then(() => {
+        document.getElementById('mantenimientoForm').reset();
+        document.getElementById('mensajeExito').style.display = 'block';
+        btn.textContent = 'REGISTRAR Y ENVIAR REPORTE';
+        btn.disabled = false;
+        setTimeout(() => {
+            document.getElementById('mensajeExito').style.display = 'none';
+        }, 5000);
+    })
+    .catch(error => {
+        alert('Ocurrió un error al enviar el formulario.');
+        btn.textContent = 'REGISTRAR Y ENVIAR REPORTE';
+        btn.disabled = false;
+    });
+});

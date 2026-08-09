@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad Funcional de Mantenimiento - GERESA Lambayeque</title>
+
+    <!-- ESTILOS CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- ICONO DE LA PESTAÑA DEL NAVEGADOR (FAVICON) -->
+    <link rel="icon" type="image/png" href="imagenes/logo_mantenimiento2026.png">
+
+</head>
+<body>
+
+<div class="layout-wrapper">
+
+    <!-- PANEL IZQUIERDO: GUÍA DE LLENADO MÁS ANCHA -->
+    <aside class="sidebar sidebar-left">
+        <div class="info-card">
+            <div class="card-header-blue">
+                GUÍA Y LEYENDA PARA EL CORRECTO LLENADO
+            </div>
+            <p class="subtitle-text">
+                Estimado personal del EE.SS.: Utilice este cuadro de referencia para clasificar correctamente los requerimientos.
+            </p>
+
+            <div class="table-container">
+                <table class="guide-table">
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Ejemplos de Equipos y Bienes</th>
+                            <th>Definición y Recomendaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="cat-title">Equipamiento Biomédico</td>
+                            <td>
+                                <ul>
+                                    <li>Monitor de funciones vitales, Aspirador de secreciones</li>
+                                    <li>Electrocardiógrafo / Oxímetro, Ecógrafo / Rayos X</li>
+                                    <li>Esterilizador a vapor / Autoclave, Centrífuga</li>
+                                    <li>Cuna de calor radiante, Unidad dental completa, entre otros </li>
+                                </ul>
+                            </td>
+                            <td>Atención médica, diagnóstico, tratamiento o rehabilitación. Colocar siempre Marca, Modelo y Código Patrimonial.</td>
+                        </tr>
+                        <tr>
+                            <td class="cat-title">Mobiliario Clínico</td>
+                            <td>
+                                <ul>
+                                    <li>Camillas de examen y transporte, Camas hospitalarias</li>
+                                    <li>Biombos, escalinatas, Sillas de ruedas, Portasueros</li>
+                                    <li>Mesas de mayo / noche, Gabinetes de curaciones</li>
+                                    <li>Sillones de extracción / Odontológicos, entre otros </li>
+                                </ul>
+                            </td>
+                            <td>Muebles adaptados para uso directo con pacientes dentro de consultorios, tópicos, parto y hospitalización.</td>
+                        </tr>
+                        <tr>
+                            <td class="cat-title">Equipo Electromecánico</td>
+                            <td>
+                                <ul>
+                                    <li>Refrigeradoras y congeladoras de vacunas</li>
+                                    <li>Compresoras de aire medicinal / dental</li>
+                                    <li>Grupos electrógenos / Generadores, Bombas de agua</li>
+                                    <li>Aire acondicionado, entre otros </li>
+                                </ul>
+                            </td>
+                            <td>Maquinarias e instalaciones eléctricas/mecánicas críticas para el funcionamiento seguro del centro.</td>
+                        </tr>
+                        <tr>
+                            <td class="cat-title">Infraestructura</td>
+                            <td>
+                                <ul>
+                                    <li>Deterioro o fisuras en paredes y techos, Pintura</li>
+                                    <li>Filtraciones de agua, Tuberías con fuga, SS.HH.</li>
+                                    <li>Puertas, cerraduras, ventanas, Techos calamina</li>
+                                    <li>Cableado eléctrico expuesto, tomacorrientes, entre otros </li>
+                                </ul>
+                            </td>
+                            <td>Instalaciones físicas. En descripción colocar ubicación exacta. En Marca/Modelo/Código colocar N/A.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </aside>
+
+    <!-- PANEL CENTRAL: FORMULARIO PRINCIPAL -->
+    <main class="main-card">
+        
+        <!-- ENCABEZADO INSTITUCIONAL -->
+        <div class="header-container">
+            <div class="logo-box logo-left">
+                <img src="imagenes/logo_geresa.jpg" alt="Logo GERESA Lambayeque" class="logo-img">
+            </div>
+
+            <div class="header-title">
+                <span class="sub-badge">GERESA LAMBAYEQUE</span>
+                <h1>UNIDAD FUNCIONAL DE MANTENIMIENTO DE INFRAESTRUCTURA Y EQUIPAMIENTO EN SALUD</h1>
+                <p>Sistema Web de Reporte de Averías e Incidencias en Establecimientos de Salud</p>
+            </div>
+
+            <div class="logo-box logo-right">
+                <img src="imagenes/LOGO_MANTENIMIENTO.png" alt="Logo Unidad Mantenimiento" class="logo-img">
+            </div>
+        </div>
+
+        <!-- FORMULARIO -->
+        <form id="mantenimientoForm" class="form-body">
+            
+            <div class="form-group">
+                <label for="eessInput">Establecimiento de Salud (EE.SS.) <span class="required">*</span></label>
+                <input type="text" id="eessInput" placeholder="🔍 Escriba 2 o 3 letras para buscar su centro..." autocomplete="off" required>
+                <div id="searchResults" class="search-results"></div>
+            </div>
+
+            <div class="form-group">
+                <label for="sisgedo">N° de Expediente SISGEDO / Oficio <span class="required">*</span></label>
+                <input type="text" id="sisgedo" placeholder="Ej: SISGEDO 51636823-0 u Oficio N° 045-2026" required>
+            </div>
+
+            <div class="form-group">
+                <label for="categoria">Categoría del Requerimiento <span class="required">*</span></label>
+                <select id="categoria" required>
+                    <option value="">-- Seleccione una categoría --</option>
+                    <option value="Equipamiento Biomédico">🩺 Equipamiento Biomédico</option>
+                    <option value="Mobiliario Clínico">🛏️ Mobiliario Clínico</option>
+                    <option value="Equipo Electromecánico">⚙️ Equipo Electromecánico</option>
+                    <option value="Infraestructura">🏥 Infraestructura</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="equipo">Nombre del Equipo o Elemento Dañado <span class="required">*</span></label>
+                <input type="text" id="equipo" placeholder="Ej: Monitor de funciones vitales, Paredes, Techos, etc." required>
+            </div>
+
+            <div class="form-row-3">
+                <div class="form-group col-third">
+                    <label for="marca">Marca</label>
+                    <input type="text" id="marca" placeholder="Ej: Mindray">
+                </div>
+
+                <div class="form-group col-third">
+                    <label for="modelo">Modelo</label>
+                    <input type="text" id="modelo" placeholder="Ej: MEC-1000">
+                </div>
+
+                <div class="form-group col-third">
+                    <label for="codigo">Código Patrimonial / Serie</label>
+                    <input type="text" id="codigo" placeholder="Ej: CP-88421">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="condicion">Condición Actual del Bien <span class="required">*</span></label>
+                <select id="condicion" required>
+                    <option value="">-- Seleccione el estado del bien --</option>
+                    <option value="Inoperativo (Fuera de servicio)">🔴 Inoperativo (Fuera de servicio)</option>
+                    <option value="Operativo con fallas">🟡 Operativo con fallas</option>
+                    <option value="Deteriorado / Mal estado">⚪ Deteriorado / Mal estado</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción Detallada del Problema <span class="required">*</span></label>
+                <textarea id="descripcion" rows="3" placeholder="Explicación del problema o falla reportada..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="prioridad">Prioridad Sugerida <span class="required">*</span></label>
+                <select id="prioridad" required>
+                    <option value="">-- Seleccione nivel de urgencia --</option>
+                    <option value="Alta">🔥 Alta (Atención detenida o riesgo inminente)</option>
+                    <option value="Media">⚠️ Media (Atención parcial con limitaciones)</option>
+                    <option value="Baja">🟢 Baja (Mantenimiento preventivo / estético)</option>
+                </select>
+            </div>
+
+            <button type="submit" id="btnEnviar">REGISTRAR Y ENVIAR REPORTE</button>
+        </form>
+
+        <div id="mensajeExito" class="alert-success">
+            ✅ ¡Reporte enviado con éxito a la Unidad Funcional de Mantenimiento!
+        </div>
+    </main>
+
+    <!-- PANEL DERECHO: LEYENDA Y CONSULTAS -->
+    <aside class="sidebar sidebar-right">
+        <div class="info-card">
+            <h3>⚡ Leyenda de Prioridad</h3>
+            <ul class="priority-legend">
+                <li><span class="badge badge-red">Alta</span> Paralización inmediata del servicio o riesgo directo a la salud.</li>
+                <li><span class="badge badge-yellow">Media</span> Equipo o área funciona parcialmente con fallas.</li>
+                <li><span class="badge badge-green">Baja</span> Mantenimiento preventivo, pintura o temas estéticos.</li>
+            </ul>
+        </div>
+
+        <div class="info-card margin-top-card">
+            <h3>📞 Consultas UFMIES</h3>
+            <p>Si requiere asistencia para clasificar su requerimiento o verificar su expediente, comuníquese con el equipo técnico de mantenimiento.</p>
+        </div>
+    </aside>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
