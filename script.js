@@ -81,7 +81,7 @@ document.addEventListener('click', function(e) {
 });
 
 // URL DE TU GOOGLE APPS SCRIPT
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyRaI6DQAkXCF8-f3C4C-tH3Nm4UW0yBwWnm2QPmyS0BZMIBhSjT3M9rYBytptqV9_a/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbyX4noanBTBM6kaPZLdaGRp2tO_7QmB4dNdcO0IqbFHKOqf0yoxRHZgedaeKeHJhti-/exec';
 
 // ENVÍO CON PANTALLA TRANSPARENTE DE CARGA Y MODAL
 document.getElementById('mantenimientoForm').addEventListener('submit', function(e) {
