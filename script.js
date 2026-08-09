@@ -80,7 +80,7 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// URL DE TU GOOGLE APPS SCRIPT// URL DE TU GOOGLE APPS SCRIPT
+// URL DE TU GOOGLE APPS SCRIPT
 const scriptURL = 'https://script.google.com/macros/s/AKfycbyRaI6DQAkXCF8-f3C4C-tH3Nm4UW0yBwWnm2QPmyS0BZMIBhSjT3M9rYBytptqV9_a/exec';
 
 // ENVÍO CON PANTALLA TRANSPARENTE DE CARGA Y MODAL
