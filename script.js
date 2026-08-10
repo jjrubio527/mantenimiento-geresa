@@ -172,12 +172,12 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
             mimeType: fotoInfo ? fotoInfo.type : ''
         };
 
-        fetch(scriptURL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        })
+     fetch(scriptURL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(formData)
+})
         .then(() => {
             loadingOverlay.style.display = 'none';
             modalExito.style.display = 'flex';
