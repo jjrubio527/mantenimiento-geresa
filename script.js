@@ -1,25 +1,52 @@
-// LISTA COMPLETA DE ESTABLECIMIENTOS (RED CHICLAYO, FERREÑAFE Y LAMBAYEQUE)
+// LISTA OFICIAL DE ESTABLECIMIENTOS DE SALUD GERESA LAMBAYEQUE (199 EE.SS.)
 const eessLista = [
-    "C.S. Chiclayo", "C.S. José Olaya", "C.S. San Antonio", "C.S. Jorge Chávez", "C.S. Verónica Stack de Tomis (Túpac Amaru)",
-    "C.S. José Quiñones Gonzales", "P.S. Cruz de la Esperanza", "C.S. Cerropón", "C.S. José Leonardo Ortiz", "C.S. Pedro Pablo Atusparias",
-    "C.S. Paul Harris", "P.S. Culpón", "P.S. Santa Ana", "P.S. Villa Hermosa", "C.S. Elohim JLO", "C.S. La Victoria",
-    "P.S. La Victoria Sector II - María Jesús", "P.S. Antonio Raymondi", "C.S. Víctor Enrique Tirado Bonilla (Chongoyape)",
-    "P.S. Pampa Grande", "P.S. Las Colmenas", "P.S. Huaca Blanca", "C.S. Pomalca", "P.S. San Luis", "P.S. San Antonio (Pomalca)",
-    "C.S. Picsi", "P.S. Capote", "C.S. Juan José Cruz Venegas", "C.S. Pimentel", "P.S. Santa Rosa", "C.S. Monsefú", "C.S. Ciudad Eten",
-    "P.S. Puerto Eten", "C.S. Reque", "P.S. Montegrande", "P.S. Las Delicias", "P.S. Franco Basaglia - Reque", "C.S. Oyotún",
-    "P.S. El Espinal", "P.S. Pan de Azúcar", "P.S. La Compuerta", "P.S. Nueva Arica", "C.S. Cayaltí", "P.S. Sipán", "C.S. Zaña",
-    "P.S. Collique", "P.S. Guayaquil", "P.S. Virgen de las Mercedes (La Otra Banda)", "P.S. Saltur", "C.S. Pósope Alto", "C.S. Tumán",
-    "P.S. Pampa La Victoria", "C.S. Lagunas - Mocupe Nuevo", "P.S. Mocupe Viejo", "P.S. Lagunas", "P.S. Pueblo Libre",
-    "Hospital Referencial Ferreñafe", "C.S. Francisco Muro Pacheco (Pueblo Nuevo)", "C.S. Señor de la Justicia", "C.S. Pítipo",
-    "P.S. Batangrande", "P.S. Cachinche", "C.S. Manuel Antonio Mesones Muro", "C.S. Inkawasi", "C.S. Moyán", "P.S. Laquipampa",
-    "P.S. Cruz Loma", "P.S. Huayrul", "P.S. Lanchipampa", "P.S. Uyurpampa", "P.S. Canchachalá", "P.S. Kongacha", "P.S. Marayhuaca",
-    "P.S. Totoras", "P.S. Cañaris", "P.S. Huacapampa", "C.S. Toribia Castro Chirinos", "C.S. San José", "P.S. Bodegones",
-    "P.S. Ciudad de Dios (Juan Tomis Stack)", "C.S. Mórrope", "P.S. El Romero", "P.S. Cruz de Paredones", "P.S. Arbolsol",
-    "P.S. Annape", "C.S. Íllimo", "P.S. Chirimoyo", "P.S. Granja Sasape", "P.S. Los Bances", "P.S. Los Sánchez", "C.S. Pacora",
-    "C.S. Jayanca", "P.S. La Viña - Jayanca", "C.S. Motupe", "P.S. Anchovira", "P.S. Marripón", "P.S. El Arrozal", "P.S. Chochope",
-    "C.S. Salas", "C.S. Colaya", "P.S. Kerguer", "P.S. El Sauce", "C.S. Olmos", "P.S. Calera Santa Rosa", "P.S. El Puente",
-    "P.S. Ancol Chico", "P.S. Insculás", "P.S. Querpón", "P.S. Tres Batanes", "P.S. Capilla Central", "P.S. Ñaupe", "P.S. El Virrey",
-    "P.S. Las Norias", "P.S. Corral de Arena", "P.S. Mocape"
+
+    // ==========================================
+    // 1. RED DE SALUD CHICLAYO
+    // ==========================================
+    "P.S. GUAYAQUIL", "C.S. CAYALTI", "HOSPITAL REGIONAL DOCENTE LAS MERCEDES", "C.S. JOSE QUIÑONEZ GONZALES", "C.S. CRUZ DE LA ESPERANZA",
+    "C.S. \"VERONICA STACK DE TOMIS\" - TUPAC AMARU", "EE.SS. Laboratorio Referencial Regional en Salud Pública de Lambayeque", "C.S. SAN ANTONIO",
+    "C.S. CERROPON", "EE.SS. ATENCION ESPECIALIZADA A POBLACION EXCLUIDA", "CSMC \"CHICLAYO\"", "C.S. JOSE OLAYA", "C.S. JORGE CHAVEZ",
+    "CSMC \"CONEXIÓN INTEGRAL\" - LA VICTORIA", "HOSPITAL REGIONAL LAMBAYEQUE", "EE.SS. SAMU GERESA LAMBAYEQUE", "EE.SS. HOGAR PROTEGIDO DE CHICLAYO",
+    "P.S. PAMPA GRANDE", "P.S. LAS COLMENAS", "P.S. HUACA BLANCA", "C.S. VICTOR ENRIQUE TIRADO BONILLA-CHONGOYAPE", "P.S. CIUDAD ETEN",
+    "P.S. PUERTO ETEN", "P.S. CULPON", "P.S. VILLA HERMOSA", "C.S. JOSE LEONARDO ORTIZ", "C.S. PAUL HARRIS", "C.S. PEDRO PABLO ATUSPARIAS",
+    "CSMC ELOHIM JOSE LEONARDO OPRTIZ", "C.S. SANTA ANA", "P.S. ANTONIO RAYMONDI", "C.S. LA VICTORIA SECTOR I", "C.S. LA VICTORIA SECTOR II - MARIA JESUS",
+    "P.S. CHOSICA DEL NORTE", "P.S. EL BOSQUE", "P.S. MOCUPE VIEJO (TRADIC.)", "C.S. MOCUPE NUEVO", "C.S. LAGUNAS", "P.S. PUEBLO LIBRE",
+    "C.S. TUPAC AMARU", "P.S. CALLANCA", "C.S. MONSEFU", "P.S. VALLE HERMOSO", "P.S. POMAPE", "C.S. NUEVA ARICA", "C.S. LA VIÑA DE NUEVA ARICA",
+    "P.S. EL ESPINAL", "P.S. PAN DE AZUCAR", "P.S. LA COMPUERTA", "C.S. OYOTUN", "C.S. PAMPA LA VICTORIA", "C.S. POSOPE ALTO",
+    "P.S. COMUNITARIO JUAN PARDO Y MIGUEL PATAPO", "P.S. CAPOTE", "C.S. COMUNITARIO JUAN JOSE CRUZ VENEGAS- PICSI", "C.S. CLAS PICSI",
+    "P.S. LAS FLORES DE LA PRADERA", "C.S. PIMENTEL", "C.S. POMALCA", "P.S. SAN LUIS", "C.S. SAN ANTONIO (POMALCA)", "C.S. PUCALA",
+    "P.S. LAS DELICIAS", "C.S. REQUE", "C.S. MENTAL COMUNITARIA \"FRANCO BASAGLIA\" - REQUE", "P.S. MONTEGRANDE", "P.S. SANTA ROSA",
+    "C.S. ZAÑA", "P.S. SALTUR", "P.S. COLLIQUE", "P.S. VIRGEN DE LAS MERCEDES LA OTRA BANDA", "P.S. SIPAN", "C.S. TUMAN",
+
+    // ==========================================
+    // 2. RED DE SALUD FERREÑAFE
+    // ==========================================
+    "P.S. CHIÑAMA", "P.S. QUIRICHIMA", "P.S. TOTORAS PAMPAVERDE", "P.S. MAMAGPAMPA", "P.S. PANDACHI", "P.S. KAÑARIS", "P.S. HUACAPAMPA",
+    "P.S. CHILASQUE", "P.S. HUAYABAMBA", "P.S. HIERBA BUENA", "P.S. LA SUCCHA", "P.S. SEÑOR DE LA JUSTICIA", "P.S. MARAYHUACA", "P.S. LA TRANCA",
+    "P.S. KONGACHA", "P.S. LANCHIPAMPA", "C.S. INKAWASI", "P.S. PUCHACA", "P.S. LAQUIPAMPA", "P.S. JANQUE", "P.S. MOYAN", "P.S. HUAYRUL",
+    "P.S. UYURPAMPA", "P.S. CRUZ LOMA", "P.S. CANCHACHALA", "P.S. TOTORAS", "C.S. MESONES MURO", "P.S. SIME", "P.S. LA TRAPOSA",
+    "P.S. MOTUPILLO", "P.S. CACHINCHE", "P.S. PATIVILCA", "P.S. SANTA CLARA", "C.S. PITIPO", "P.S. LA ZARANDA", "C.S. MOCHUMI VIEJO",
+    "P.S. BATANGRANDE", "C.S. PUEBLO NUEVO", "P.S. LAS LOMAS",
+
+    // ==========================================
+    // 3. RED DE SALUD LAMBAYEQUE
+    // ==========================================
+    "P.S. CHOCHOPE", "P.S. CHIRIMOYO", "P.S. SAN PEDRO SASAPE", "C.S. ILLIMO", "CSMC TUMI DE ORO", "C.S. LA VIÑA (JAYANCA)", "C.S. JAYANCA",
+    "P.S. MUYFINCA-PUNTO 09", "C.S. TORIBIA CASTRO CHIRINOS", "P.S. CAPILLA SANTA ROSA LAMBAYEQUE", "P.S. SIALUPE HUAMANTANGA",
+    "CSMC NAYLAMP LAMBAYEQUE", "EE.SS. HOGAR PROTEGIDO LAMBAYEQUE", "C.S. SAN MARTIN-LAMBAYEQUE", "HOSPITAL BELEN - LAMBAYEQUE",
+    "P.S. PUNTO CUATRO", "C.S. MOCHUMI", "P.S. MARAVILLAS", "P.S. PAREDONES MUY FINCA", "P.S. ARBOLSOL", "P.S. ANNAPE", "C.S. LAGUNAS (MORROPE)",
+    "P.S. TRANCA FANUPE", "P.S. POSITOS", "P.S. SEQUION", "P.S. LA COLORADA", "P.S. EL ROMERO", "P.S. SANTA ROSA LAS PAMPAS",
+    "P.S. HUACA TRAPICHE DE BRONCE", "P.S. MONTE HERMOZO", "P.S. CARACUCHO", "P.S. QUEMAZON", "P.S. SANTA ISABEL", "P.S. CRUZ DEL MEDANO",
+    "C.S. MORROPE", "P.S. CRUZ DE PAREDONES", "P.S. HUACA DE BARRO", "P.S. FANUPE BARRIO NUEVO", "P.S. LA GARTERA", "P.S. CHEPITO",
+    "P.S. EL ARROZAL", "P.S. TONGORRAPE", "C.S. MOTUPE", "P.S. MARRIPON", "P.S. ANCHOVIRA", "P.S. FICUAR", "P.S. CAPILLA CENTRAL",
+    "P.S. TRES BATANES", "C.S. SANTA ROSA (OLMOS)", "P.S. CASERIO PLAYA DE CASCAJAL", "P.S. EL PUENTE", "P.S. LA ESTANCIA", "P.S. ANCOL CHICO",
+    "P.S. EL PUEBLITO", "P.S. MOCAPE", "P.S. PASABAR ASERRADERO", "P.S. QUERPON", "P.S. LAS NORIAS", "CSMC Cruz de Chalpon-Olmos",
+    "P.S. INSCULAS", "P.S. CALERA SANTA ROSA", "P.S. JOSE ELVER MIO TABOADA", "P.S. CORRAL DE ARENA", "C.S. OLMOS", "P.S. ELVIRREY",
+    "P.S. HUACA RIVERA", "C.S. PACORA", "P.S. LA RAMADA", "P.S. LAGUNA HUANAMA", "P.S. COLAYA", "P.S. EL SAUCE", "C.S. SALAS",
+    "P.S. TALLAPAMPA", "P.S. PENACHI", "P.S. CORRAL DE PIEDRA", "P.S. KERGUER", "P.S. HUMEDADES", "P.S. SAN JOSE", "P.S. BODEGONES",
+    "P.S. SAN CARLOS", "P.S. CIUDAD DE DIOS - JUAN TOMIS STACK", "P.S. GRANJA SASAPE", "P.S. LA RAYA", "C.S. TUCUME VIEJO", "P.S. LOS BANCES",
+    "P.S. LOS SANCHEZ", "C.S. TUCUME"
 ];
 
 const input = document.getElementById('eessInput');
