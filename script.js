@@ -100,7 +100,8 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
         codigo: document.getElementById('codigo').value || 'N/A',
         condicion: document.getElementById('condicion').value,
         descripcion: document.getElementById('descripcion').value,
-        prioridad: document.getElementById('prioridad').value
+        prioridad: document.getElementById('prioridad').value,
+        telefono: document.getElementById('telefono').value
     };
 
     // ENVÍO DIRECTO A GOOGLE SHEETS
