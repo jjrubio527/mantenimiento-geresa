@@ -101,7 +101,7 @@ document.addEventListener('click', function(e) {
 });
 
 // URL DE TU GOOGLE APPS SCRIPT
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyX4noanBTBM6kaPZLdaGRp2tO_7QmB4dNdcO0IqbFHKOqf0yoxRHZgedaeKeHJhti-/exec';
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwVc4xurVEl4JH5IDuZd-It7yK5abau3tCb6CUpkHyuZjNwU-5Z1U2LGs4LRxKKzEzD/exec';
 
 // FUNCIÓN PARA COMPRIMIR FOTOGRAFÍAS ANTES DE ENVIAR (EVITA ERRORES DE PESO)
 function comprimirImagen(file, callback) {
