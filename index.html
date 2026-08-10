@@ -124,13 +124,28 @@
                 <label for="telefono">Teléfono / WhatsApp de Contacto para Coordinaciones <span class="required">*</span></label>
                 <input type="tel" id="telefono" placeholder="Ej: 987654321 (Número del responsable del reporte)" required>
             </div>
-  <!-- CAMPO ADJUNTA FOTO (FORZAR MENÚ CÁMARA + GALERÍA) -->
+<!-- CAMPO FOTO CON OPCIONES SEPARADAS (CÁMARA / GALERÍA) -->
 <div class="form-group">
-    <label for="fotoInput">Adjuntar Foto o Evidencia (Opcional)</label>
-    <input type="file" id="fotoInput" accept="image/jpeg, image/png, image/jpg, image/*">
-    <small style="color: #64748b; display: block; margin-top: 4px;">
-        📷 En celular: Seleccione desde su galería.
-    </small>
+    <label>Adjuntar Foto o Evidencia (Opcional)</label>
+    
+    <div style="display: flex; gap: 10px; margin-top: 5px;">
+        <!-- Botón para Tomar Foto en Vivo -->
+        <button type="button" onclick="document.getElementById('inputCamara').click();" style="flex: 1; background: #0284c7; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
+            📸 Tomar Foto
+        </button>
+
+        <!-- Botón para Elegir de Galería -->
+        <button type="button" onclick="document.getElementById('inputGaleria').click();" style="flex: 1; background: #475569; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
+            🖼️ Elegir Galería
+        </button>
+    </div>
+
+    <!-- Inputs invisibles que activan cada función -->
+    <input type="file" id="inputCamara" accept="image/*" capture="environment" style="display: none;">
+    <input type="file" id="inputGaleria" accept="image/*" style="display: none;">
+
+    <!-- Texto que mostrará el nombre del archivo seleccionado -->
+    <small id="nombreFotoSeleccionada" style="color: #16a34a; display: block; margin-top: 8px; font-weight: bold;"></small>
 </div>
 
             <button type="submit" id="btnEnviar">REGISTRAR Y ENVIAR REPORTE</button>
