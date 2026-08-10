@@ -110,42 +110,67 @@ document.addEventListener('click', function(e) {
 // URL DE TU GOOGLE APPS SCRIPT
 const scriptURL = 'https://script.google.com/macros/s/AKfycbyX4noanBTBM6kaPZLdaGRp2tO_7QmB4dNdcO0IqbFHKOqf0yoxRHZgedaeKeHJhti-/exec';
 
-// ENVÍO CON PANTALLA TRANSPARENTE DE CARGA Y MODAL
+
+// ENVÍO DIRECTO A GOOGLE SHEETS Y GOOGLE DRIVE
 document.getElementById('mantenimientoForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
-    // Muestra pantalla de carga transparente con el círculo girando
     loadingOverlay.style.display = 'flex';
 
-    const formData = {
-        eess: document.getElementById('eessInput').value,
-        sisgedo: document.getElementById('sisgedo').value,
-        categoria: document.getElementById('categoria').value,
-        equipo: document.getElementById('equipo').value,
-        marca: document.getElementById('marca').value || 'N/A',
-        modelo: document.getElementById('modelo').value || 'N/A',
-        codigo: document.getElementById('codigo').value || 'N/A',
-        condicion: document.getElementById('condicion').value,
-        descripcion: document.getElementById('descripcion').value,
-        prioridad: document.getElementById('prioridad').value,
-        telefono: document.getElementById('telefono').value
-    };
+    const fileInput = document.getElementById('fotoInput');
+    const file = fileInput.files[0];
 
-    // ENVÍO DIRECTO A GOOGLE SHEETS
-    fetch(scriptURL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-    })
-    .then(() => {
-        loadingOverlay.style.display = 'none';
-        modalExito.style.display = 'flex';
-    })
-    .catch(error => {
-        loadingOverlay.style.display = 'none';
-        alert('Ocurrió un error al enviar el reporte. Por favor reintente.');
-    });
+    // Función para enviar los datos JSON a Apps Script
+    function enviarDatos(fotoData) {
+        const formData = {
+            eess: document.getElementById('eessInput').value,
+            sisgedo: document.getElementById('sisgedo').value,
+            categoria: document.getElementById('categoria').value,
+            equipo: document.getElementById('equipo').value,
+            marca: document.getElementById('marca').value || 'N/A',
+            modelo: document.getElementById('modelo').value || 'N/A',
+            codigo: document.getElementById('codigo').value || 'N/A',
+            condicion: document.getElementById('condicion').value,
+            descripcion: document.getElementById('descripcion').value,
+            prioridad: document.getElementById('prioridad').value,
+            telefono: document.getElementById('telefono').value,
+            archivo: fotoData ? fotoData.base64 : '',
+            nombreArchivo: fotoData ? fotoData.nombre : '',
+            mimeType: fotoData ? fotoData.type : ''
+        };
+
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData)
+        })
+        .then(() => {
+            loadingOverlay.style.display = 'none';
+            modalExito.style.display = 'flex';
+        })
+        .catch(error => {
+            loadingOverlay.style.display = 'none';
+            alert('Ocurrió un error al enviar el reporte. Por favor reintente.');
+        });
+    }
+
+    // Si el usuario adjuntó una foto, la leemos en Base64
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const base64Data = evt.target.result.split(',')[1];
+            enviarDatos({
+                base64: base64Data,
+                nombre: file.name,
+                type: file.type
+            });
+        };
+        reader.readAsDataURL(file);
+    } else {
+        // Si no subió foto, enviamos sin archivo
+        enviarDatos(null);
+    }
 });
 
 // BOTÓN PARA REGISTRAR OTRO REPORTE / NUEVA SOLICITUD
