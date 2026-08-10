@@ -1,9 +1,6 @@
 // LISTA OFICIAL DE ESTABLECIMIENTOS DE SALUD GERESA LAMBAYEQUE (199 EE.SS.)
 const eessLista = [
-
-    // ==========================================
     // 1. RED DE SALUD CHICLAYO
-    // ==========================================
     "P.S. GUAYAQUIL", "C.S. CAYALTI", "HOSPITAL REGIONAL DOCENTE LAS MERCEDES", "C.S. JOSE QUIÑONEZ GONZALES", "C.S. CRUZ DE LA ESPERANZA",
     "C.S. \"VERONICA STACK DE TOMIS\" - TUPAC AMARU", "EE.SS. Laboratorio Referencial Regional en Salud Pública de Lambayeque", "C.S. SAN ANTONIO",
     "C.S. CERROPON", "EE.SS. ATENCION ESPECIALIZADA A POBLACION EXCLUIDA", "CSMC \"CHICLAYO\"", "C.S. JOSE OLAYA", "C.S. JORGE CHAVEZ",
@@ -19,9 +16,7 @@ const eessLista = [
     "P.S. LAS DELICIAS", "C.S. REQUE", "C.S. MENTAL COMUNITARIA \"FRANCO BASAGLIA\" - REQUE", "P.S. MONTEGRANDE", "P.S. SANTA ROSA",
     "C.S. ZAÑA", "P.S. SALTUR", "P.S. COLLIQUE", "P.S. VIRGEN DE LAS MERCEDES LA OTRA BANDA", "P.S. SIPAN", "C.S. TUMAN",
 
-    // ==========================================
     // 2. RED DE SALUD FERREÑAFE
-    // ==========================================
     "P.S. CHIÑAMA", "P.S. QUIRICHIMA", "P.S. TOTORAS PAMPAVERDE", "P.S. MAMAGPAMPA", "P.S. PANDACHI", "P.S. KAÑARIS", "P.S. HUACAPAMPA",
     "P.S. CHILASQUE", "P.S. HUAYABAMBA", "P.S. HIERBA BUENA", "P.S. LA SUCCHA", "P.S. SEÑOR DE LA JUSTICIA", "P.S. MARAYHUACA", "P.S. LA TRANCA",
     "P.S. KONGACHA", "P.S. LANCHIPAMPA", "C.S. INKAWASI", "P.S. PUCHACA", "P.S. LAQUIPAMPA", "P.S. JANQUE", "P.S. MOYAN", "P.S. HUAYRUL",
@@ -29,9 +24,7 @@ const eessLista = [
     "P.S. MOTUPILLO", "P.S. CACHINCHE", "P.S. PATIVILCA", "P.S. SANTA CLARA", "C.S. PITIPO", "P.S. LA ZARANDA", "C.S. MOCHUMI VIEJO",
     "P.S. BATANGRANDE", "C.S. PUEBLO NUEVO", "P.S. LAS LOMAS",
 
-    // ==========================================
     // 3. RED DE SALUD LAMBAYEQUE
-    // ==========================================
     "P.S. CHOCHOPE", "P.S. CHIRIMOYO", "P.S. SAN PEDRO SASAPE", "C.S. ILLIMO", "CSMC TUMI DE ORO", "C.S. LA VIÑA (JAYANCA)", "C.S. JAYANCA",
     "P.S. MUYFINCA-PUNTO 09", "C.S. TORIBIA CASTRO CHIRINOS", "P.S. CAPILLA SANTA ROSA LAMBAYEQUE", "P.S. SIALUPE HUAMANTANGA",
     "CSMC NAYLAMP LAMBAYEQUE", "EE.SS. HOGAR PROTEGIDO LAMBAYEQUE", "C.S. SAN MARTIN-LAMBAYEQUE", "HOSPITAL BELEN - LAMBAYEQUE",
@@ -110,18 +103,58 @@ document.addEventListener('click', function(e) {
 // URL DE TU GOOGLE APPS SCRIPT
 const scriptURL = 'https://script.google.com/macros/s/AKfycbyX4noanBTBM6kaPZLdaGRp2tO_7QmB4dNdcO0IqbFHKOqf0yoxRHZgedaeKeHJhti-/exec';
 
+// FUNCIÓN PARA COMPRIMIR FOTOGRAFÍAS ANTES DE ENVIAR (EVITA ERRORES DE PESO)
+function comprimirImagen(file, callback) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+            const maxDimension = 1200; // Redimensiona si la imagen es gigante
 
-// ENVÍO DIRECTO A GOOGLE SHEETS Y GOOGLE DRIVE
+            if (width > height) {
+                if (width > maxDimension) {
+                    height = Math.round((height * maxDimension) / width);
+                    width = maxDimension;
+                }
+            } else {
+                if (height > maxDimension) {
+                    width = Math.round((width * maxDimension) / height);
+                    height = maxDimension;
+                }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // Exportar como JPEG comprimido al 70% de calidad
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+            const base64Data = dataUrl.split(',')[1];
+            callback({
+                base64: base64Data,
+                nombre: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+                type: "image/jpeg"
+            });
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
+
+// ENVÍO DIRECTO A GOOGLE SHEETS
 document.getElementById('mantenimientoForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     loadingOverlay.style.display = 'flex';
 
     const fileInput = document.getElementById('fotoInput');
-    const file = fileInput.files[0];
+    const file = fileInput ? fileInput.files[0] : null;
 
-    // Función para enviar los datos JSON a Apps Script
-    function enviarDatos(fotoData) {
+    function enviarPayload(fotoInfo) {
         const formData = {
             eess: document.getElementById('eessInput').value,
             sisgedo: document.getElementById('sisgedo').value,
@@ -134,9 +167,9 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
             descripcion: document.getElementById('descripcion').value,
             prioridad: document.getElementById('prioridad').value,
             telefono: document.getElementById('telefono').value,
-            archivo: fotoData ? fotoData.base64 : '',
-            nombreArchivo: fotoData ? fotoData.nombre : '',
-            mimeType: fotoData ? fotoData.type : ''
+            archivo: fotoInfo ? fotoInfo.base64 : '',
+            nombreArchivo: fotoInfo ? fotoInfo.nombre : '',
+            mimeType: fotoInfo ? fotoInfo.type : ''
         };
 
         fetch(scriptURL, {
@@ -155,25 +188,16 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
         });
     }
 
-    // Si el usuario adjuntó una foto, la leemos en Base64
     if (file) {
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            const base64Data = evt.target.result.split(',')[1];
-            enviarDatos({
-                base64: base64Data,
-                nombre: file.name,
-                type: file.type
-            });
-        };
-        reader.readAsDataURL(file);
+        comprimirImagen(file, function(fotoInfo) {
+            enviarPayload(fotoInfo);
+        });
     } else {
-        // Si no subió foto, enviamos sin archivo
-        enviarDatos(null);
+        enviarPayload(null);
     }
 });
 
-// BOTÓN PARA REGISTRAR OTRO REPORTE / NUEVA SOLICITUD
+// BOTÓN PARA REGISTRAR OTRO REPORTE
 btnNuevoRegistro.addEventListener('click', function() {
     document.getElementById('mantenimientoForm').reset();
     modalExito.style.display = 'none';
