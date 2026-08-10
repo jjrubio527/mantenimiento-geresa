@@ -103,56 +103,63 @@ document.addEventListener('click', function(e) {
 // URL DE TU GOOGLE APPS SCRIPT
 const scriptURL = 'https://script.google.com/macros/s/AKfycbwVc4xurVEl4JH5IDuZd-It7yK5abau3tCb6CUpkHyuZjNwU-5Z1U2LGs4LRxKKzEzD/exec';
 
-// MOSTRAR NOMBRE DE LA FOTO SELECCIONADA AL USAR LOS BOTONES
+// MOSTRAR NOMBRE DE LA FOTO SELECCIONADA
 document.getElementById('inputCamara').addEventListener('change', function() {
     if (this.files[0]) {
-        document.getElementById('inputGaleria').value = ''; // Limpia la otra opción
+        document.getElementById('inputGaleria').value = ''; 
         document.getElementById('nombreFotoSeleccionada').textContent = '📸 Foto tomada: ' + this.files[0].name;
     }
 });
 
 document.getElementById('inputGaleria').addEventListener('change', function() {
     if (this.files[0]) {
-        document.getElementById('inputCamara').value = ''; // Limpia la otra opción
+        document.getElementById('inputCamara').value = ''; 
         document.getElementById('nombreFotoSeleccionada').textContent = '🖼️ Imagen seleccionada: ' + this.files[0].name;
     }
 });
 
-// FUNCIÓN PARA COMPRIMIR FOTOGRAFÍAS ANTES DE ENVIAR
-function comprimirImagen(file, callback) {
+// COMPRESIÓN COMPATIBLE CON MÓVILES (ANDROID Y IPHONE)
+function procesarFotoMovil(file, callback) {
     const reader = new FileReader();
+    reader.onerror = function() { callback(null); };
     reader.onload = function(e) {
         const img = new Image();
+        img.onerror = function() { callback(null); };
         img.onload = function() {
-            const canvas = document.createElement('canvas');
-            let width = img.width;
-            let height = img.height;
-            const maxDimension = 1200;
+            try {
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                const maxDim = 1000; // Reduce a un tamaño muy liviano y óptimo para celulares
 
-            if (width > height) {
-                if (width > maxDimension) {
-                    height = Math.round((height * maxDimension) / width);
-                    width = maxDimension;
+                if (width > height) {
+                    if (width > maxDim) {
+                        height = Math.round((height * maxDim) / width);
+                        width = maxDim;
+                    }
+                } else {
+                    if (height > maxDim) {
+                        width = Math.round((width * maxDim) / height);
+                        height = maxDim;
+                    }
                 }
-            } else {
-                if (height > maxDimension) {
-                    width = Math.round((width * maxDimension) / height);
-                    height = maxDimension;
-                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
+                const base64Data = dataUrl.split(',')[1];
+
+                callback({
+                    base64: base64Data,
+                    nombre: "foto_" + Date.now() + ".jpg",
+                    type: "image/jpeg"
+                });
+            } catch (err) {
+                callback(null);
             }
-
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-            const base64Data = dataUrl.split(',')[1];
-            callback({
-                base64: base64Data,
-                nombre: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
-                type: "image/jpeg"
-            });
         };
         img.src = e.target.result;
     };
@@ -165,10 +172,10 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
     
     loadingOverlay.style.display = 'flex';
 
-    // REVISA SI HAY FOTO TOMADA DE CÁMARA O DE GALERÍA
     const inputCamara = document.getElementById('inputCamara');
     const inputGaleria = document.getElementById('inputGaleria');
-    const file = (inputCamara && inputCamara.files[0]) ? inputCamara.files[0] : ((inputGaleria && inputGaleria.files[0]) ? inputGaleria.files[0] : null);
+    const file = (inputCamara && inputCamara.files && inputCamara.files[0]) ? inputCamara.files[0] : 
+                 ((inputGaleria && inputGaleria.files && inputGaleria.files[0]) ? inputGaleria.files[0] : null);
 
     function enviarPayload(fotoInfo) {
         const formData = {
@@ -205,7 +212,7 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
     }
 
     if (file) {
-        comprimirImagen(file, function(fotoInfo) {
+        procesarFotoMovil(file, function(fotoInfo) {
             enviarPayload(fotoInfo);
         });
     } else {
