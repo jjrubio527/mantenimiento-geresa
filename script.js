@@ -103,7 +103,22 @@ document.addEventListener('click', function(e) {
 // URL DE TU GOOGLE APPS SCRIPT
 const scriptURL = 'https://script.google.com/macros/s/AKfycbwVc4xurVEl4JH5IDuZd-It7yK5abau3tCb6CUpkHyuZjNwU-5Z1U2LGs4LRxKKzEzD/exec';
 
-// FUNCIÓN PARA COMPRIMIR FOTOGRAFÍAS ANTES DE ENVIAR (EVITA ERRORES DE PESO)
+// MOSTRAR NOMBRE DE LA FOTO SELECCIONADA AL USAR LOS BOTONES
+document.getElementById('inputCamara').addEventListener('change', function() {
+    if (this.files[0]) {
+        document.getElementById('inputGaleria').value = ''; // Limpia la otra opción
+        document.getElementById('nombreFotoSeleccionada').textContent = '📸 Foto tomada: ' + this.files[0].name;
+    }
+});
+
+document.getElementById('inputGaleria').addEventListener('change', function() {
+    if (this.files[0]) {
+        document.getElementById('inputCamara').value = ''; // Limpia la otra opción
+        document.getElementById('nombreFotoSeleccionada').textContent = '🖼️ Imagen seleccionada: ' + this.files[0].name;
+    }
+});
+
+// FUNCIÓN PARA COMPRIMIR FOTOGRAFÍAS ANTES DE ENVIAR
 function comprimirImagen(file, callback) {
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -112,7 +127,7 @@ function comprimirImagen(file, callback) {
             const canvas = document.createElement('canvas');
             let width = img.width;
             let height = img.height;
-            const maxDimension = 1200; // Redimensiona si la imagen es gigante
+            const maxDimension = 1200;
 
             if (width > height) {
                 if (width > maxDimension) {
@@ -131,7 +146,6 @@ function comprimirImagen(file, callback) {
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
 
-            // Exportar como JPEG comprimido al 70% de calidad
             const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
             const base64Data = dataUrl.split(',')[1];
             callback({
@@ -151,8 +165,10 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
     
     loadingOverlay.style.display = 'flex';
 
-    const fileInput = document.getElementById('fotoInput');
-    const file = fileInput ? fileInput.files[0] : null;
+    // REVISA SI HAY FOTO TOMADA DE CÁMARA O DE GALERÍA
+    const inputCamara = document.getElementById('inputCamara');
+    const inputGaleria = document.getElementById('inputGaleria');
+    const file = (inputCamara && inputCamara.files[0]) ? inputCamara.files[0] : ((inputGaleria && inputGaleria.files[0]) ? inputGaleria.files[0] : null);
 
     function enviarPayload(fotoInfo) {
         const formData = {
@@ -172,12 +188,12 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
             mimeType: fotoInfo ? fotoInfo.type : ''
         };
 
-     fetch(scriptURL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(formData)
-})
+        fetch(scriptURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(formData)
+        })
         .then(() => {
             loadingOverlay.style.display = 'none';
             modalExito.style.display = 'flex';
@@ -200,6 +216,7 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
 // BOTÓN PARA REGISTRAR OTRO REPORTE
 btnNuevoRegistro.addEventListener('click', function() {
     document.getElementById('mantenimientoForm').reset();
+    document.getElementById('nombreFotoSeleccionada').textContent = '';
     modalExito.style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
