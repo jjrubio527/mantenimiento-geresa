@@ -3,250 +3,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unidad Funcional de Mantenimiento - GERESA Lambayeque</title>
+    <title>Registro de Mantenimiento - GERESA</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" href="imagenes/LOGO_MANTENIMIENTO.png">
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA CON CÍRCULO GIRANDO (OVERLAY) -->
-<div id="loadingOverlay" class="overlay-loading">
-    <div class="spinner"></div>
-    <p>Enviando reporte a la UFMIES...</p>
-</div>
-
-<!-- VENTANA FLOTANTE DE ÉXITO -->
-<div id="modalExito" class="modal-exito">
-    <div class="modal-card">
-        <div class="check-icon">✅</div>
-        <h2>¡Reporte Registrado con Éxito!</h2>
-        <p>La información ha sido enviada correctamente a la hoja de registro de la Unidad Funcional de Mantenimiento.</p>
-        <button id="btnNuevoRegistro" class="btn-reset">REGISTRAR OTRO REPORTE</button>
-    </div>
-</div>
-
-<div class="layout-wrapper">
-
-    <!-- PANEL CENTRAL: FORMULARIO PRINCIPAL -->
-    <main class="main-card">
-        
-        <!-- ENCABEZADO INSTITUCIONAL -->
-        <div class="header-container">
-            <div class="logo-box logo-left">
-                <img src="imagenes/logo_geresa.jpg" alt="Logo GERESA Lambayeque" class="logo-img">
-            </div>
-
-            <div class="header-title">
-                <span class="sub-badge">GERESA LAMBAYEQUE</span>
-                <h1>UNIDAD FUNCIONAL DE MANTENIMIENTO DE INFRAESTRUCTURA Y EQUIPAMIENTO EN SALUD</h1>
-                <p>Sistema Web de Reporte de Averías e Incidencias en Establecimientos de Salud</p>
-            </div>
-
-            <div class="logo-box logo-right">
-                <img src="imagenes/LOGO_MANTENIMIENTO.png" alt="Logo Unidad Mantenimiento" class="logo-img">
-            </div>
+    <div class="container">
+        <!-- SECCIÓN LOGO E HISTORIAL DE TÍTULOS -->
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="imagenes/Geres.jpg" alt="Logo UFMIES" style="max-width: 220px; width: 100%; height: auto; margin: 0 auto 15px auto; display: block;">
+            <h2 style="color: #1e293b; font-size: 16px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px;">
+                UNIDAD FUNCIONAL DE MANTENIMIENTO DE INFRAESTRUCTURA Y EQUIPAMIENTO EN SALUD
+            </h2>
+            <p style="color: #64748b; font-size: 13px;">Sistema de Reporte de Averías e Mantenimiento de Salud</p>
         </div>
 
-        <!-- FORMULARIO -->
-        <form id="mantenimientoForm" class="form-body">
-            
+        <form id="mantenimientoForm">
+            <!-- BÚSQUEDA DE ESTABLECIMIENTO DE SALUD -->
             <div class="form-group">
-                <label for="eessInput">Establecimiento de Salud (EE.SS.) <span class="required">*</span></label>
-                <input type="text" id="eessInput" placeholder="🔍 Escriba 2 o 3 letras para buscar su centro..." autocomplete="off" required>
-                <div id="searchResults" class="search-results"></div>
+                <label for="eessInput">Establecimiento de Salud (EE.SS.) *</label>
+                <input type="text" id="eessInput" placeholder="Escriba para buscar su centro de salud..." autocomplete="off" required>
+                <div id="searchResults" class="results-list"></div>
             </div>
 
+            <!-- SISGEDO -->
             <div class="form-group">
-                <label for="sisgedo">N° de Expediente SISGEDO / Oficio <span class="required">*</span></label>
-                <input type="text" id="sisgedo" placeholder="Ej: SISGEDO 51636823-0 u Oficio N° 045-2026" required>
+                <label for="sisgedo">N° de Expediente SISGEDO / Oficio *</label>
+                <input type="text" id="sisgedo" placeholder="Ej: EXP-2024-1234 o OFICIO N° 456-2024" required>
             </div>
 
+            <!-- CATEGORÍA -->
             <div class="form-group">
-                <label for="categoria">Categoría del Requerimiento <span class="required">*</span></label>
+                <label for="categoria">Categoría del Mantenimiento *</label>
                 <select id="categoria" required>
-                    <option value="">-- Seleccione una categoría --</option>
-                    <option value="Equipamiento Biomédico">🩺 Equipamiento Biomédico</option>
-                    <option value="Mobiliario Clínico">🛏️ Mobiliario Clínico</option>
-                    <option value="Equipo Electromecánico">⚙️ Equipo Electromecánico</option>
-                    <option value="Infraestructura">🏥 Infraestructura</option>
+                    <option value="">-- Seleccionar categoría --</option>
+                    <option value="Infraestructura">Infraestructura</option>
+                    <option value="Equipamiento Médico">Equipamiento Médico</option>
+                    <option value="Vehículo/Ambulancia">Vehículo/Ambulancia</option>
+                    <option value="Sistemas/Cómputo">Sistemas/Cómputo</option>
+                    <option value="Otros">Otros</option>
                 </select>
             </div>
 
+            <!-- EQUIPO / ÁREA -->
             <div class="form-group">
-                <label for="equipo">Nombre del Equipo o Elemento Dañado <span class="required">*</span></label>
-                <input type="text" id="equipo" placeholder="Ej: Monitor de funciones vitales, Paredes, Techos, etc." required>
+                <label for="equipo">Nombre del Equipo o Área Afectada *</label>
+                <input type="text" id="equipo" placeholder="Ej: Ecógrafo, Rayos X, Unidad Dental, Techo de Tópico, etc." required>
             </div>
 
-            <div class="form-row-3">
-                <div class="form-group col-third">
-                    <label for="marca">Marca</label>
-                    <input type="text" id="marca" placeholder="Ej: Mindray">
-                </div>
-
-                <div class="form-group col-third">
-                    <label for="modelo">Modelo</label>
-                    <input type="text" id="modelo" placeholder="Ej: MEC-1000">
-                </div>
-
-                <div class="form-group col-third">
-                    <label for="codigo">Código Patrimonial / Serie</label>
-                    <input type="text" id="codigo" placeholder="Ej: CP-88421">
-                </div>
+            <!-- MARCA Y MODELO -->
+            <div class="form-group">
+                <label for="marca">Marca</label>
+                <input type="text" id="marca" placeholder="Ej: Mindray">
             </div>
 
             <div class="form-group">
-                <label for="condicion">Condición Actual del Bien <span class="required">*</span></label>
+                <label for="modelo">Modelo</label>
+                <input type="text" id="modelo" placeholder="Ej: DC-N3">
+            </div>
+
+            <!-- CÓDIGO PATRIMONIAL -->
+            <div class="form-group">
+                <label for="codigo">Código Patrimonial / Serie</label>
+                <input type="text" id="codigo" placeholder="Ej: 742255880012">
+            </div>
+
+            <!-- CONDICIÓN -->
+            <div class="form-group">
+                <label for="condicion">Condición Actual del Bien *</label>
                 <select id="condicion" required>
-                    <option value="">-- Seleccione el estado del bien --</option>
-                    <option value="Inoperativo (Fuera de servicio)">🔴 Inoperativo (Fuera de servicio)</option>
-                    <option value="Operativo con fallas">🟡 Operativo con fallas</option>
-                    <option value="Deteriorado / Mal estado">⚪ Deteriorado / Mal estado</option>
+                    <option value="">-- Seleccionar condición --</option>
+                    <option value="Inoperativo">Inoperativo (No funciona)</option>
+                    <option value="Operativo con Falla">Operativo con Falla (Funciona a medias)</option>
+                    <option value="Mantenimiento Preventivo">Mantenimiento Preventivo Requerido</option>
                 </select>
             </div>
 
+            <!-- DESCRIPCIÓN -->
             <div class="form-group">
-                <label for="descripcion">Descripción Detallada del Problema <span class="required">*</span></label>
-                <textarea id="descripcion" rows="3" placeholder="Explicación del problema o falla reportada..." required></textarea>
+                <label for="descripcion">Descripción Detallada del Problema *</label>
+                <textarea id="descripcion" rows="4" placeholder="Escriba aquí los detalles del fallo..." required></textarea>
             </div>
 
+            <!-- PRIORIDAD -->
             <div class="form-group">
-                <label for="prioridad">Prioridad Sugerida <span class="required">*</span></label>
+                <label for="prioridad">Prioridad Sugerida *</label>
                 <select id="prioridad" required>
-                    <option value="">-- Seleccione nivel de urgencia --</option>
-                    <option value="Alta">🔥 Alta (Atención detenida o riesgo inminente)</option>
-                    <option value="Media">⚠️ Media (Atención parcial con limitaciones)</option>
-                    <option value="Baja">🟢 Baja (Mantenimiento preventivo / estético)</option>
+                    <option value="Alta">Alta (Atención inmediata)</option>
+                    <option value="Media" selected>Media (Atención normal)</option>
+                    <option value="Baja">Baja (Atención programada)</option>
                 </select>
             </div>
 
-            <!-- CAMPO TELÉFONO DE CONTACTO -->
+            <!-- TELÉFONO -->
             <div class="form-group">
-                <label for="telefono">Teléfono / WhatsApp de Contacto para Coordinaciones <span class="required">*</span></label>
-                <input type="tel" id="telefono" placeholder="Ej: 987654321 (Número del responsable del reporte)" required>
+                <label for="telefono">Teléfono / WhatsApp de Contacto para Coordinaciones *</label>
+                <input type="tel" id="telefono" placeholder="Ej: 987654321 - Nombre del responsable del reporte" required>
             </div>
-<!-- CAMPO FOTO CON OPCIONES SEPARADAS (CÁMARA / GALERÍA) -->
-<div class="form-group">
-    <label>Adjuntar Foto o Evidencia (Opcional)</label>
-    
-    <div style="display: flex; gap: 10px; margin-top: 5px;">
-        <!-- Botón para Tomar Foto en Vivo -->
-        <button type="button" onclick="document.getElementById('inputCamara').click();" style="flex: 1; background: #0284c7; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
-            📸 Tomar Foto
-        </button>
 
-        <!-- Botón para Elegir de Galería -->
-        <button type="button" onclick="document.getElementById('inputGaleria').click();" style="flex: 1; background: #475569; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
-            🖼️ Elegir Galería
-        </button>
+            <!-- BOTONES DE ADJUNTAR FOTO -->
+            <div class="form-group">
+                <label>Adjuntar Foto o Evidencia (Opcional)</label>
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <button type="button" onclick="document.getElementById('inputCamara').click();" style="flex: 1; background: #0284c7; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">
+                        📸 Tomar Foto
+                    </button>
+                    <button type="button" onclick="document.getElementById('inputGaleria').click();" style="flex: 1; background: #475569; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 13px;">
+                        🖼️ Elegir Galería
+                    </button>
+                </div>
+                <input type="file" id="inputCamara" accept="image/*" capture="environment" style="display: none;">
+                <input type="file" id="inputGaleria" accept="image/*" style="display: none;">
+                <small id="nombreFotoSeleccionada" style="color: #16a34a; display: block; margin-top: 6px; font-weight: bold; font-size: 12px;"></small>
+            </div>
+
+            <!-- BOTÓN ENVIAR -->
+            <button type="submit" style="width: 100%; background: #16a34a; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px;">
+                REGISTRAR Y ENVIAR REPORTE
+            </button>
+        </form>
     </div>
 
-    <!-- Inputs invisibles que activan cada función -->
-    <input type="file" id="inputCamara" accept="image/*" capture="environment" style="display: none;">
-    <input type="file" id="inputGaleria" accept="image/*" style="display: none;">
-
-    <!-- Texto que mostrará el nombre del archivo seleccionado -->
-    <small id="nombreFotoSeleccionada" style="color: #16a34a; display: block; margin-top: 8px; font-weight: bold;"></small>
-</div>
-
-            <button type="submit" id="btnEnviar">REGISTRAR Y ENVIAR REPORTE</button>
-
-
-        </form>
-    </main>
-
-    <!-- PANEL IZQUIERDO: GUÍA DE LLENADO -->
-    <aside class="sidebar sidebar-left">
-        <div class="info-card">
-            <div class="card-header-blue">
-                GUÍA Y LEYENDA PARA EL CORRECTO LLENADO
-            </div>
-            <p class="subtitle-text">
-                Estimado personal del EE.SS.: Utilice este cuadro de referencia para clasificar correctamente los requerimientos.
-            </p>
-
-            <div class="table-container">
-                <table class="guide-table">
-                    <thead>
-                        <tr>
-                            <th>Categoría</th>
-                            <th>Ejemplos de Equipos y Bienes</th>
-                            <th>Definición y Recomendaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="cat-title">Equipamiento Biomédico</td>
-                            <td>
-                                <ul>
-                                    <li>Monitor de funciones vitales, Aspirador de secreciones</li>
-                                    <li>Electrocardiógrafo / Oxímetro, Ecógrafo / Rayos X</li>
-                                    <li>Esterilizador a vapor / Autoclave, Centrífuga</li>
-                                    <li>Cuna de calor radiante, Unidad dental completa, entre otros</li>
-                                </ul>
-                            </td>
-                            <td>Atención médica, diagnóstico, tratamiento o rehabilitación. Colocar siempre Marca, Modelo y Código Patrimonial.</td>
-                        </tr>
-                        <tr>
-                            <td class="cat-title">Mobiliario Clínico</td>
-                            <td>
-                                <ul>
-                                    <li>Camillas de examen y transporte, Camas hospitalarias</li>
-                                    <li>Biombos, escalinatas, Sillas de ruedas, Portasueros</li>
-                                    <li>Mesas de mayo / noche, Gabinetes de curaciones</li>
-                                    <li>Sillones de extracción / Odontológicos, entre otros</li>
-                                </ul>
-                            </td>
-                            <td>Muebles adaptados para uso directo con pacientes dentro de consultorios, tópicos, parto y hospitalización.</td>
-                        </tr>
-                        <tr>
-                            <td class="cat-title">Equipo Electromecánico</td>
-                            <td>
-                                <ul>
-                                    <li>Refrigeradoras y congeladoras de vacunas</li>
-                                    <li>Compresoras de aire medicinal / dental</li>
-                                    <li>Grupos electrógenos / Generadores, Bombas de agua</li>
-                                    <li>Aire acondicionado, entre otros</li>
-                                </ul>
-                            </td>
-                            <td>Maquinarias e instalaciones eléctricas/mecánicas críticas para el funcionamiento seguro del centro.</td>
-                        </tr>
-                        <tr>
-                            <td class="cat-title">Infraestructura</td>
-                            <td>
-                                <ul>
-                                    <li>Deterioro o fisuras en paredes y techos, Pintura</li>
-                                    <li>Filtraciones de agua, Tuberías con fuga, SS.HH.</li>
-                                    <li>Puertas, cerraduras, ventanas, Techos calamina</li>
-                                    <li>Cableado eléctrico expuesto, tomacorrientes, entre otros</li>
-                                </ul>
-                            </td>
-                            <td>Instalaciones físicas. En descripción colocar ubicación exacta. En Marca/Modelo/Código colocar N/A.</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <!-- OVERLAY DE CARGA (OCULTO) -->
+    <div id="loadingOverlay" class="overlay">
+        <div class="modal-content">
+            <div class="spinner"></div>
+            <p style="font-weight: bold; color: #1e293b;">Enviando reporte, por favor espere...</p>
         </div>
-    </aside>
+    </div>
 
-    <!-- PANEL DERECHO: LEYENDA Y CONSULTAS -->
-    <aside class="sidebar sidebar-right">
-        <div class="info-card">
-            <h3>⚡ Leyenda de Prioridad</h3>
-            <ul class="priority-legend">
-                <li><span class="badge badge-red">Alta</span> Paralización inmediata del servicio o riesgo directo a la salud.</li>
-                <li><span class="badge badge-yellow">Media</span> Equipo o área funciona parcialmente con fallas.</li>
-                <li><span class="badge badge-green">Baja</span> Mantenimiento preventivo, pintura o temas estéticos.</li>
-            </ul>
+    <!-- MODAL DE ÉXITO (OCULTO) -->
+    <div id="modalExito" class="overlay">
+        <div class="modal-content">
+            <h3 style="color: #16a34a; margin-bottom: 10px;">¡Reporte Registrado con Éxito!</h3>
+            <p style="font-size: 14px; color: #475569;">Su solicitud ha sido registrada correctamente en la base de datos de la UFMIES.</p>
+            <button id="btnNuevoRegistro">REGISTRAR OTRO REPORTE</button>
         </div>
+    </div>
 
-        <div class="info-card margin-top-card">
-            <h3>📞 Consultas UFMIES</h3>
-            <p>Si requiere asistencia para clasificar su requerimiento o verificar su expediente, comuníquese con el equipo técnico de mantenimiento.</p>
-        </div>
-    </aside>
-
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
