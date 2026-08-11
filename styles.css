@@ -9,7 +9,7 @@
 /* FONDO CON MÁS VIDA Y LUMINOSIDAD */
 body {
     background: linear-gradient(rgba(240, 244, 248, 0.75), rgba(226, 232, 240, 0.82)), 
-                url('imagenes/fondo.jpg') no-repeat center center fixed;
+                url('imagenes/Geres.jpg') no-repeat center center fixed;
     background-size: cover;
     min-height: 100vh;
     display: flex;
