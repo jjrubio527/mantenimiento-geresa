@@ -6,7 +6,7 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* FONDO CON MÁS VIDA Y LUMINOSIDAD */
+/* FONDO PRINCIPAL CON NUEVA IMAGEN (Geres.jpg) */
 body {
     background: linear-gradient(rgba(240, 244, 248, 0.75), rgba(226, 232, 240, 0.82)), 
                 url('imagenes/Geres.jpg') no-repeat center center fixed;
