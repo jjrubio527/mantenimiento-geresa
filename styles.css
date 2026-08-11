@@ -11,7 +11,8 @@
 
 body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background-image: linear-gradient(rgba(240, 244, 248, 0.75), rgba(226, 232, 240, 0.85)), 
+    /* Reducimos la capa blanca a un valor muy suave (35% - 40% 0.15 Y 0.20) para que la foto recobre color */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.20)),
                       url('imagenes/Geres.jpg');
     background-size: cover;
     background-position: center;
@@ -34,14 +35,14 @@ body {
     max-width: 1650px;
     align-items: flex-start;
 }
-
 .sidebar-left { flex: 0 0 620px; }
 .sidebar-right { flex: 0 0 250px; }
 
-/* TARJETAS LATERALES TRASLÚCIDAS */
+/* TARJETAS LATERALES TRASLÚCIDAS (GUÍA Y LEYENDAS) */
 .info-card {
-    background: rgba(15, 23, 42, 0.75);
-    backdrop-filter: blur(12px);
+    background: rgba(15, 23, 42, 0.65); /* 65% de opacidad para que sea transparente y deje ver la foto */
+    backdrop-filter: blur(8px);          /* Efecto de desenfoque elegante sobre la foto */
+    -webkit-backdrop-filter: blur(8px);
     border-radius: 14px;
     padding: 18px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
