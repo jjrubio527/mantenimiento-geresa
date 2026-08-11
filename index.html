@@ -9,17 +9,10 @@
 <body>
 
     <div class="container">
-        <!-- CABECERA DE LOGOS INSTITUCIONALES -->
-        <div class="header-logos">
-            <img src="imagenes/logo-geresa.png" alt="Logo GERESA" class="logo-header" onerror="this.style.visibility='hidden'">
-            <img src="imagenes/logo-ufmies.png" alt="Logo UFMIES" class="logo-header" onerror="this.style.visibility='hidden'">
-        </div>
-
-        <h2 class="title">UNIDAD FUNCIONAL DE MANTENIMIENTO DE INFRAESTRUCTURA Y EQUIPAMIENTO EN SALUD</h2>
-        <p class="subtitle">Sistema de Reporte de Averías y Mantenimiento en Salud</p>
-
+        <h2>UNIDAD FUNCIONAL DE MANTENIMIENTO DE INFRAESTRUCTURA Y EQUIPAMIENTO EN SALUD</h2>
+        
         <form id="mantenimientoForm">
-            <!-- ESTABLECIMIENTO DE SALUD -->
+            <!-- BUSCADOR EE.SS. -->
             <div class="form-group">
                 <label for="eessInput">Establecimiento de Salud (EE.SS.) *</label>
                 <input type="text" id="eessInput" placeholder="Escriba para buscar su centro de salud..." autocomplete="off" required>
@@ -45,22 +38,22 @@
                 </select>
             </div>
 
-            <!-- EQUIPO / ÁREA -->
+            <!-- EQUIPO -->
             <div class="form-group">
                 <label for="equipo">Nombre del Equipo o Área Afectada *</label>
                 <input type="text" id="equipo" placeholder="Ej: Ecógrafo, Rayos X, Unidad Dental, Techo de Tópico, etc." required>
             </div>
 
-            <!-- MARCA Y MODELO EN UNA SOLA FILA -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="marca">Marca</label>
-                    <input type="text" id="marca" placeholder="Ej: Mindray">
-                </div>
-                <div class="form-group">
-                    <label for="modelo">Modelo</label>
-                    <input type="text" id="modelo" placeholder="Ej: DC-N3">
-                </div>
+            <!-- MARCA -->
+            <div class="form-group">
+                <label for="marca">Marca</label>
+                <input type="text" id="marca" placeholder="Ej: Mindray">
+            </div>
+
+            <!-- MODELO -->
+            <div class="form-group">
+                <label for="modelo">Modelo</label>
+                <input type="text" id="modelo" placeholder="Ej: DC-N3">
             </div>
 
             <!-- CÓDIGO PATRIMONIAL -->
@@ -102,39 +95,39 @@
                 <input type="tel" id="telefono" placeholder="Ej: 987654321 - Nombre del responsable del reporte" required>
             </div>
 
-            <!-- ADJUNTAR FOTO -->
+            <!-- BOTONES DE FOTO (CÁMARA / GALERÍA) -->
             <div class="form-group">
                 <label>Adjuntar Foto o Evidencia (Opcional)</label>
-                <div class="btn-foto-group">
-                    <button type="button" class="btn-camara" onclick="document.getElementById('inputCamara').click();">
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <button type="button" onclick="document.getElementById('inputCamara').click();" style="flex: 1; background: #0284c7; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
                         📸 Tomar Foto
                     </button>
-                    <button type="button" class="btn-galeria" onclick="document.getElementById('inputGaleria').click();">
+                    <button type="button" onclick="document.getElementById('inputGaleria').click();" style="flex: 1; background: #475569; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
                         🖼️ Elegir Galería
                     </button>
                 </div>
                 <input type="file" id="inputCamara" accept="image/*" capture="environment" style="display: none;">
                 <input type="file" id="inputGaleria" accept="image/*" style="display: none;">
-                <small id="nombreFotoSeleccionada" class="foto-info"></small>
+                <small id="nombreFotoSeleccionada" style="color: #16a34a; display: block; margin-top: 8px; font-weight: bold;"></small>
             </div>
 
             <!-- BOTÓN ENVIAR -->
-            <button type="submit" class="btn-submit">REGISTRAR Y ENVIAR REPORTE</button>
+            <button type="submit">REGISTRAR Y ENVIAR REPORTE</button>
         </form>
     </div>
 
-    <!-- OVERLAYS / MODALES (OCULTOS POR DEFECTO) -->
-    <div id="loadingOverlay" class="overlay" style="display: none;">
+    <!-- OVERLAYS (CARGA Y ÉXITO) -->
+    <div id="loadingOverlay" class="overlay">
         <div class="modal-content">
             <div class="spinner"></div>
-            <p style="font-weight: bold; color: #1e293b;">Enviando reporte, por favor espere...</p>
+            <p>Enviando reporte, por favor espere...</p>
         </div>
     </div>
 
-    <div id="modalExito" class="overlay" style="display: none;">
+    <div id="modalExito" class="overlay">
         <div class="modal-content">
-            <h3 style="color: #16a34a; margin-bottom: 10px;">¡Reporte Registrado con Éxito!</h3>
-            <p style="font-size: 14px; color: #475569;">Su solicitud ha sido registrada correctamente en la base de datos de la UFMIES.</p>
+            <h3>¡Reporte Registrado con Éxito!</h3>
+            <p>Su solicitud ha sido registrada correctamente en la base de datos de la UFMIES.</p>
             <button id="btnNuevoRegistro">REGISTRAR OTRO REPORTE</button>
         </div>
     </div>
