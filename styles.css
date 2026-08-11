@@ -6,11 +6,8 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* FONDO PRINCIPAL */
 body {
-    background: linear-gradient(rgba(240, 244, 248, 0.75), rgba(226, 232, 240, 0.82)), 
-                url('imagenes/Geres.jpg') no-repeat center center fixed;
-    background-size: cover;
+    background-color: #f1f5f9;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -18,46 +15,31 @@ body {
     padding: 20px;
 }
 
-/* CONTAINER PRINCIPAL DEL FORMULARIO */
 .container {
     background: #ffffff;
-    max-width: 650px;
+    max-width: 600px;
     width: 100%;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
-    border-top: 6px solid #2563eb;
-    margin: 0 auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border-top: 5px solid #2563eb;
 }
 
-/* LIMITAR TAMAÑO DE CUALQUIER IMAGEN / LOGO DENTRO DEL FORMULARIO */
-.container img {
-    max-width: 250px !important;
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto 15px auto;
-}
-
-/* ENCABEZADO */
 h2 {
     color: #1e293b;
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-size: 20px;
-    font-weight: 700;
 }
 
-/* GRUPOS DE FORMULARIO Y ETIQUETAS */
 .form-group {
-    margin-bottom: 18px;
+    margin-bottom: 15px;
     position: relative;
-    width: 100%;
 }
 
 label {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     font-weight: 600;
     color: #334155;
     font-size: 14px;
@@ -65,23 +47,21 @@ label {
 
 input, select, textarea {
     width: 100%;
-    padding: 11px;
+    padding: 10px;
     border: 1px solid #cbd5e1;
     border-radius: 6px;
     font-size: 14px;
     color: #0f172a;
     background-color: #f8fafc;
-    transition: all 0.3s ease;
 }
 
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: #2563eb;
     background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* LISTA DE RESULTADOS DE BÚSQUEDA EN TIEMPO REAL */
 .results-list {
     position: absolute;
     top: 100%;
@@ -110,73 +90,63 @@ input:focus, select:focus, textarea:focus {
     color: #2563eb;
 }
 
-/* BOTÓN DE ENVIAR DESTACADO (VERDE VIBRANTE) */
 button[type="submit"] {
     width: 100%;
-    background: linear-gradient(135deg, #16a34a, #15803d);
-    color: #ffffff;
+    background-color: #2563eb;
+    color: white;
     border: none;
-    padding: 14px;
-    border-radius: 8px;
+    padding: 12px;
+    border-radius: 6px;
     font-size: 16px;
     font-weight: bold;
-    letter-spacing: 0.5px;
     cursor: pointer;
-    margin-top: 15px;
-    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.35);
-    transition: all 0.3s ease;
+    margin-top: 10px;
 }
 
 button[type="submit"]:hover {
-    background: linear-gradient(135deg, #15803d, #166534);
-    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.45);
-    transform: translateY(-1px);
+    background-color: #1d4ed8;
 }
 
-/* OVERLAY Y MODAL DE ÉXITO (OCULTOS POR DEFECTO) */
 .overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(15, 23, 42, 0.65);
-    display: none; /* Asegura que permanezca oculto hasta enviar */
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
 
 .modal-content {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 12px;
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
     text-align: center;
     max-width: 400px;
     width: 90%;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
 }
 
 .modal-content button {
     background: #2563eb;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
+    padding: 8px 16px;
+    border-radius: 4px;
     margin-top: 15px;
     cursor: pointer;
-    font-weight: bold;
 }
 
-/* SPINNER DE CARGA */
 .spinner {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #2563eb;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #2563eb;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     animation: spin 1s linear infinite;
-    margin: 0 auto 15px auto;
+    margin: 0 auto 10px auto;
 }
 
 @keyframes spin {
