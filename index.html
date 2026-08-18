@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Configuración del juego de caracteres UTF-8 para admitir tildes y caracteres especiales en español -->
     <meta charset="UTF-8">
+    <!-- Viewport para que la página sea responsiva y se adapte a pantallas móviles y tablets -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unidad Funcional de Mantenimiento - GERESA Lambayeque</title>
+    <!-- Enlace a la hoja de estilos externa -->
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/png" href="imagenes/LOGO_MANTENIMIENTO.png">
+    <!-- Ícono que aparece en la pestaña del navegador (Favicon) -->
+    <link rel="icon" type="image/png" href="imagenes/mat.png">
 </head>
 <body>
 
-<!-- PANTALLA DE CARGA CON CÍRCULO GIRANDO (OVERLAY) -->
+<!-- =========================================================================
+     1. PANTALLA DE CARGA (OVERLAY SPINNER)
+     Se muestra mediante JavaScript mientras se envían los datos (Google Sheets, API o Base de Datos)
+     ========================================================================= -->
 <div id="loadingOverlay" class="overlay-loading">
     <div class="spinner"></div>
     <p>Enviando reporte a la UFMIES...</p>
 </div>
 
-<!-- VENTANA FLOTANTE DE ÉXITO -->
+<!-- =========================================================================
+     2. VENTANA MODAL FLOTANTE DE ÉXITO
+     Aparece cuando el envío se completó satisfactoriamente, dando la opción de un nuevo registro
+     ========================================================================= -->
 <div id="modalExito" class="modal-exito">
     <div class="modal-card">
         <div class="check-icon">✅</div>
@@ -25,12 +35,19 @@
     </div>
 </div>
 
+<!-- =========================================================================
+     3. CONTENEDOR PRINCIPAL (LAYOUT WRAPPER)
+     Organiza el diseño en 3 columnas: Panel Izquierdo (Guía), Centro (Formulario), Panel Derecho (Leyenda)
+     ========================================================================= -->
 <div class="layout-wrapper">
 
-    <!-- PANEL CENTRAL: FORMULARIO PRINCIPAL -->
+    <!-- =====================================================================
+         3.1 PANEL CENTRAL: FORMULARIO PRINCIPAL
+         Contiene el encabezado con los logos y el cuerpo interactivo donde el usuario ingresa la data
+         ===================================================================== -->
     <main class="main-card">
         
-        <!-- ENCABEZADO INSTITUCIONAL -->
+        <!-- ENCABEZADO INSTITUCIONAL CON LOGOS Y TÍTULOS -->
         <div class="header-container">
             <div class="logo-box logo-left">
                 <img src="imagenes/logo_geresa.jpg" alt="Logo GERESA Lambayeque" class="logo-img">
@@ -47,23 +64,39 @@
             </div>
         </div>
 
-        <!-- FORMULARIO -->
+        <!-- FORMULARIO DE CAPTURA DE DATOS -->
         <form id="mantenimientoForm" class="form-body">
             
+            <!-- CAMPO: RED DE SALUD (Ubicado adentro para alinearse con los márgenes internos) -->
+            <div class="form-group">
+                <label for="redSalud">Red de Salud / Dependencia <span class="required">*</span></label>
+                <select id="redSalud" name="redSalud" required>
+                    <option value="">-- Seleccione una Red de Salud --</option>
+                    <option value="RED CHICLAYO">RED DE SALUD CHICLAYO</option>
+                    <option value="RED LAMBAYEQUE">RED DE SALUD LAMBAYEQUE</option>
+                    <option value="RED FERREÑAFE">RED DE SALUD FERREÑAFE</option>
+                    <option value="GERESA SEDE">GERESA SEDE ADMINISTRATIVA</option>
+                </select>
+            </div>
+
+            <!-- CAMPO: ESTABLECIMIENTO DE SALUD CON AUTOCOMPLETADO / BÚSQUEDA DINÁMICA -->
             <div class="form-group">
                 <label for="eessInput">Establecimiento de Salud (EE.SS.) <span class="required">*</span></label>
-                <input type="text" id="eessInput" placeholder="🔍 Escriba 2 o 3 letras para buscar su centro..." autocomplete="off" required>
+                <input type="text" id="eessInput" name="eessInput" placeholder="🔍 Escriba 2 o 3 letras para buscar su centro..." autocomplete="off" required>
+                <!-- Contenedor donde JavaScript inserta los resultados sugeridos -->
                 <div id="searchResults" class="search-results"></div>
             </div>
 
+            <!-- CAMPO: EXPEDIENTE SISGEDO U OFICIO DE REFERENCIA -->
             <div class="form-group">
-                <label for="sisgedo">N° de Expediente SISGEDO / Oficio <span class="required">*</span></label>
-                <input type="text" id="sisgedo" placeholder="Ej: SISGEDO 51636823-0 u Oficio N° 045-2026" required>
+                <label for="sisgedo">N° de Expediente SISGEDO / Oficio con el que fue reportado si es que tuviera <span class="required">*</span></label>
+                <input type="text" id="sisgedo" name="sisgedo" placeholder="Ej: SISGEDO 51636823-0 u Oficio N° 045-2026" required>
             </div>
 
+            <!-- CAMPO: CATEGORÍA DEL REQUERIMIENTO (Controla la visibilidad con JS de los siguientes bloques) -->
             <div class="form-group">
                 <label for="categoria">Categoría del Requerimiento <span class="required">*</span></label>
-                <select id="categoria" required>
+                <select id="categoria" name="categoria" required>
                     <option value="">-- Seleccione una categoría --</option>
                     <option value="Equipamiento Biomédico">🩺 Equipamiento Biomédico</option>
                     <option value="Mobiliario Clínico">🛏️ Mobiliario Clínico</option>
@@ -72,89 +105,112 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label for="equipo">Nombre del Equipo o Elemento Dañado <span class="required">*</span></label>
-                <input type="text" id="equipo" placeholder="Ej: Monitor de funciones vitales, Paredes, Techos, etc." required>
+            <!-- SECCIÓN CONDICIONAL: CAMPOS DE EQUIPOS (Biomédico, Mobiliario, Electromecánico) -->
+            <div id="camposEquipos">
+                <div class="form-group">
+                    <label for="equipo">Nombre del Equipo o Elemento <span class="required">*</span></label>
+                    <input type="text" id="equipo" name="equipo" placeholder="Ej: Monitor de funciones vitales, Cama clínica, Bomba de agua">
+                </div>
+
+                <div class="form-row-3">
+                    <div class="form-group col-third">
+                        <label for="marca">Marca</label>
+                        <input type="text" id="marca" name="marca" placeholder="Ej: Mindray">
+                    </div>
+
+                    <div class="form-group col-third">
+                        <label for="modelo">Modelo</label>
+                        <input type="text" id="modelo" name="modelo" placeholder="Ej: MEC-1000">
+                    </div>
+
+                    <div class="form-group col-third">
+                        <label for="codigo">Serie</label>
+                        <input type="text" id="codigo" name="codigo" placeholder="Ej: CP-88421">
+                    </div>
+                </div>
             </div>
 
-            <div class="form-row-3">
-                <div class="form-group col-third">
-                    <label for="marca">Marca</label>
-                    <input type="text" id="marca" placeholder="Ej: Mindray">
+            <!-- SECCIÓN CONDICIONAL: CAMPOS DE INFRAESTRUCTURA (Se muestra cuando se elige Infraestructura) -->
+            <div id="camposInfra" style="display: none;">
+                <div class="form-group">
+                    <label for="areaAmbiente">Descripción del Área / Ambientes a Intervenir <span class="required">*</span></label>
+                    <input type="text" id="areaAmbiente" name="areaAmbiente" placeholder="Ej: Consultorio 02, Tópico de Urgencias, Pasadizo principal">
                 </div>
-
-                <div class="form-group col-third">
-                    <label for="modelo">Modelo</label>
-                    <input type="text" id="modelo" placeholder="Ej: MEC-1000">
-                </div>
-
-                <div class="form-group col-third">
-                    <label for="codigo">Código Patrimonial / Serie</label>
-                    <input type="text" id="codigo" placeholder="Ej: CP-88421">
+                <div class="form-group">
+                    <label for="detalleInfra">Detalle de la Falla o Trabajo Requerido</label>
+                    <input type="text" id="detalleInfra" name="detalleInfra" placeholder="Ej: Fuga en grifería, resane de muros, cambio de luminarias">
                 </div>
             </div>
-
+            
+            <!-- CAMPO: ESTADO OPERATIVO DEL BIEN (Redactado de forma amigable para el personal asistencial) -->
             <div class="form-group">
-                <label for="condicion">Condición Actual del Bien <span class="required">*</span></label>
-                <select id="condicion" required>
-                    <option value="">-- Seleccione el estado del bien --</option>
-                    <option value="Inoperativo (Fuera de servicio)">🔴 Inoperativo (Fuera de servicio)</option>
-                    <option value="Operativo con fallas">🟡 Operativo con fallas</option>
-                    <option value="Deteriorado / Mal estado">⚪ Deteriorado / Mal estado</option>
+                <label for="estado_bien">Estado Actual del Bien / Equipo <span class="required">*</span></label>
+                <select name="estado_bien" id="estado_bien" required>
+                    <option value="">-- Seleccione el estado del equipo --</option>
+                    <option value="OPERATIVO">🟢 Operativo (Funciona con normalidad)</option>
+                    <option value="OPERATIVO_CON_FALLAS">🟡 Funciona pero con fallas (Emite alarmas, lentitud, ruidos o falla intermitente)</option>
+                    <option value="INOPERATIVO">🔴 Inoperativo / Apagado (No enciende o no permite realizar procedimientos)</option>
+                    <option value="DETERIORADO_REPOSICION">⚪ Muy deteriorado / Antiguo (Desgaste severo, obsoleto o requiere cambio/reposición)</option>
                 </select>
             </div>
 
+            <!-- CAMPO: DESCRIPCIÓN DEL PROBLEMA -->
             <div class="form-group">
                 <label for="descripcion">Descripción Detallada del Problema <span class="required">*</span></label>
-                <textarea id="descripcion" rows="3" placeholder="Explicación del problema o falla reportada..." required></textarea>
+                <textarea id="descripcion" name="descripcion" rows="3" placeholder="Explicación detallada del problema o avería reportada..." required></textarea>
             </div>
 
+            <!-- CAMPO: PRIORIDAD SUGERIDA SEGÚN RIESGO / CONTINUIDAD DEL SERVICIO -->
             <div class="form-group">
                 <label for="prioridad">Prioridad Sugerida <span class="required">*</span></label>
-                <select id="prioridad" required>
+                <select id="prioridad" name="prioridad" required>
                     <option value="">-- Seleccione nivel de urgencia --</option>
-                    <option value="Alta">🔥 Alta (Atención detenida o riesgo inminente)</option>
-                    <option value="Media">⚠️ Media (Atención parcial con limitaciones)</option>
-                    <option value="Baja">🟢 Baja (Mantenimiento preventivo / estético)</option>
+                    <option value="Alta">🔴 Alta / Crítica (Soporte de vida, paralización del servicio o riesgo inminente)</option>
+                    <option value="Media">🟡 Media / Importante (Atención parcial con limitaciones o cuenta con respaldo)</option>
+                    <option value="Baja">🟢 Baja / Rutinaria (Mantenimiento preventivo, pintura o detalle estético)</option>
                 </select>
             </div>
 
-            <!-- CAMPO TELÉFONO DE CONTACTO -->
+            <!-- CAMPO: TELÉFONO O WHATSAPP DEL CONTACTO EN EL EE.SS. -->
             <div class="form-group">
                 <label for="telefono">Teléfono / WhatsApp de Contacto para Coordinaciones <span class="required">*</span></label>
-                <input type="tel" id="telefono" placeholder="Ej: 987654321 (Número del responsable del reporte)" required>
+                <input type="tel" id="telefono" name="telefono" placeholder="Ej: 987654321 (Número del responsable del reporte)" required>
             </div>
-<!-- CAMPO FOTO CON OPCIONES SEPARADAS (CÁMARA / GALERÍA) -->
-<div class="form-group">
-    <label>Adjuntar Foto o Evidencia (Opcional)</label>
-    
-    <div style="display: flex; gap: 10px; margin-top: 5px;">
-        <!-- Botón para Tomar Foto en Vivo -->
-        <button type="button" onclick="document.getElementById('inputCamara').click();" style="flex: 1; background: #0284c7; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
-            📸 Tomar Foto
-        </button>
 
-        <!-- Botón para Elegir de Galería -->
-        <button type="button" onclick="document.getElementById('inputGaleria').click();" style="flex: 1; background: #475569; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
-            🖼️ Elegir Galería
-        </button>
-    </div>
+            <!-- CAMPO: ADJUNTAR FOTO CON BOTONES DIRECTOS (CÁMARA / GALERÍA) -->
+            <div class="form-group">
+                <label>Adjuntar Foto o Evidencia (Opcional)</label>
+                
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <!-- Botón que activa la cámara del móvil -->
+                    <button type="button" onclick="document.getElementById('inputCamara').click();" style="flex: 1; background: #0284c7; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                        📸 Tomar Foto
+                    </button>
 
-    <!-- Inputs invisibles que activan cada función -->
-    <input type="file" id="inputCamara" accept="image/*" capture="environment" style="display: none;">
-    <input type="file" id="inputGaleria" accept="image/*" style="display: none;">
+                    <!-- Botón que abre el explorador de archivos/galería -->
+                    <button type="button" onclick="document.getElementById('inputGaleria').click();" style="flex: 1; background: #475569; color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;">
+                        🖼️ Elegir Galería
+                    </button>
+                </div>
 
-    <!-- Texto que mostrará el nombre del archivo seleccionado -->
-    <small id="nombreFotoSeleccionada" style="color: #16a34a; display: block; margin-top: 8px; font-weight: bold;"></small>
-</div>
+                <!-- Inputs ocultos ejecutados por los botones superiores -->
+                <input type="file" id="inputCamara" accept="image/*" capture="environment" style="display: none;">
+                <input type="file" id="inputGaleria" accept="image/*" style="display: none;">
 
+                <!-- Muestra en texto el nombre del archivo cargado -->
+                <small id="nombreFotoSeleccionada" style="color: #16a34a; display: block; margin-top: 8px; font-weight: bold;"></small>
+            </div>
+
+            <!-- BOTÓN PRINCIPAL DE ENVÍO -->
             <button type="submit" id="btnEnviar">REGISTRAR Y ENVIAR REPORTE</button>
-
 
         </form>
     </main>
 
-    <!-- PANEL IZQUIERDO: GUÍA DE LLENADO -->
+    <!-- =====================================================================
+         3.2 PANEL IZQUIERDO: GUÍA TÉCNICA Y RECOMENDACIONES
+         Ayuda al personal de salud a clasificar el bien en la categoría correcta
+         ===================================================================== -->
     <aside class="sidebar sidebar-left">
         <div class="info-card">
             <div class="card-header-blue">
@@ -228,7 +284,10 @@
         </div>
     </aside>
 
-    <!-- PANEL DERECHO: LEYENDA Y CONSULTAS -->
+    <!-- =====================================================================
+         3.3 PANEL DERECHO: LEYENDA DE PRIORIDADES Y CONTACTO UFMIES
+         Informa los criterios de gravedad y números de ayuda
+         ===================================================================== -->
     <aside class="sidebar sidebar-right">
         <div class="info-card">
             <h3>⚡ Leyenda de Prioridad</h3>
@@ -247,7 +306,7 @@
 
 </div>
 
+<!-- Archivo JavaScript para la lógica interactiva del autocompletado, visibilidad condicional y envío -->
 <script src="script.js"></script>
 </body>
 </html>
-
