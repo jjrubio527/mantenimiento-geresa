@@ -1,17 +1,25 @@
+/* ==========================================================================
+   1. VARIABLES GLOBALES (:root)
+   Paleta de colores y valores reutilizables en todo el diseño institucional
+   ========================================================================== */
 :root {
-    --primary-dark: #0f172a;
-    --primary-blue: #1e3a8a;
-    --accent-blue: #2563eb;
+    --primary-dark: #0f172a;     /* Azul noche / fondo oscuro */
+    --primary-blue: #1e3a8a;     /* Azul institucional principal */
+    --accent-blue: #2563eb;      /* Azul vivo para focos y botones */
     --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e40af 100%);
-    --bg-light: #f1f5f9;
-    --card-bg: #ffffff;
-    --text-main: #1e293b;
-    --border-color: #cbd5e1;
+    --bg-light: #f1f5f9;         /* Gris claro de soporte */
+    --card-bg: #ffffff;          /* Fondo blanco de la tarjeta principal */
+    --text-main: #1e293b;        /* Color principal de textos (gris oscuro) */
+    --border-color: #cbd5e1;     /* Color sutil para bordes de inputs */
 }
 
+/* ==========================================================================
+   2. CUERPO Y FONDO GENERAL (body)
+   Controla la tipografía, imagen de fondo institucional fija y centrado
+   ========================================================================== */
 body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    /* Reducimos la capa blanca a un valor muy suave (35% - 40% 0.15 Y 0.20) para que la foto recobre color */
+    /* Capa translúcida blanca sobre la imagen para mantener contraste y legibilidad */
     background-image: linear-gradient(rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.20)),
                       url('imagenes/Geres.jpg');
     background-size: cover;
@@ -27,7 +35,10 @@ body {
     min-height: 100vh;
 }
 
-/* ESTRUCTURA TRES COLUMNAS */
+/* ==========================================================================
+   3. ESTRUCTURA DE TRES COLUMNAS (layout-wrapper)
+   Distribuye la Guía (izquierda), Formulario (centro) y Leyendas (derecha)
+   ========================================================================== */
 .layout-wrapper {
     display: flex;
     gap: 20px;
@@ -35,13 +46,22 @@ body {
     max-width: 1650px;
     align-items: flex-start;
 }
-.sidebar-left { flex: 0 0 620px; }
-.sidebar-right { flex: 0 0 250px; }
 
-/* TARJETAS LATERALES TRASLÚCIDAS (GUÍA Y LEYENDAS) */
+.sidebar-left { 
+    flex: 0 0 620px; /* Ancho fijo para la tabla de guía técnica */
+}
+
+.sidebar-right { 
+    flex: 0 0 250px; /* Ancho fijo para las notas y prioridades */
+}
+
+/* ==========================================================================
+   4. TARJETAS LATERALES TRASLÚCIDAS (Glassmorphism)
+   Paneles oscuros con efecto blur que dejan ver la foto de fondo
+   ========================================================================== */
 .info-card {
-    background: rgba(15, 23, 42, 0.65); /* 65% de opacidad para que sea transparente y deje ver la foto */
-    backdrop-filter: blur(8px);          /* Efecto de desenfoque elegante sobre la foto */
+    background: rgba(15, 23, 42, 0.65); /* 65% de opacidad */
+    backdrop-filter: blur(8px);          /* Efecto de desenfoque de fondo */
     -webkit-backdrop-filter: blur(8px);
     border-radius: 14px;
     padding: 18px;
@@ -71,7 +91,13 @@ body {
     text-align: center;
 }
 
-.table-container { overflow-x: auto; }
+/* ==========================================================================
+   5. TABLA DE GUÍA TÉCNICA (Panel izquierdo)
+   Estilizado compacto para la referencia de categorías
+   ========================================================================== */
+.table-container { 
+    overflow-x: auto; 
+}
 
 .guide-table {
     width: 100%;
@@ -82,7 +108,7 @@ body {
 .guide-table th {
     background-color: rgba(30, 58, 138, 0.85);
     color: #ffffff;
-    padding: 8px 8px;
+    padding: 8px;
     text-align: left;
     font-size: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -90,18 +116,32 @@ body {
 
 .guide-table td {
     border: 1px solid rgba(255, 255, 255, 0.12);
-    padding: 8px 8px;
+    padding: 8px;
     vertical-align: top;
     line-height: 1.35;
     color: #e2e8f0;
 }
 
-.guide-table tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.05); }
-.cat-title { font-weight: 700; color: #93c5fd; width: 120px; }
+.guide-table tr:nth-child(even) { 
+    background-color: rgba(255, 255, 255, 0.05); 
+}
 
-.guide-table ul { margin: 0; padding-left: 12px; }
-.guide-table li { margin-bottom: 2px; }
+.cat-title { 
+    font-weight: 700; 
+    color: #93c5fd; 
+    width: 120px; 
+}
 
+.guide-table ul { 
+    margin: 0; 
+    padding-left: 12px; 
+}
+
+.guide-table li { 
+    margin-bottom: 2px; 
+}
+
+/* Títulos y márgenes en tarjetas laterales */
 .info-card h3 {
     margin: 0 0 10px 0;
     color: #60a5fa;
@@ -111,8 +151,14 @@ body {
     padding-bottom: 4px;
 }
 
-.margin-top-card { margin-top: 15px; }
+.margin-top-card { 
+    margin-top: 15px; 
+}
 
+/* ==========================================================================
+   6. BADGES Y LEYENDAS DE PRIORIDAD (Panel derecho)
+   Indicadores de color para Alta, Media y Baja urgencia
+   ========================================================================== */
 .priority-legend {
     list-style: none !important;
     padding-left: 0 !important;
@@ -121,7 +167,10 @@ body {
     color: #e2e8f0;
 }
 
-.priority-legend li { margin-bottom: 10px; line-height: 1.35; }
+.priority-legend li { 
+    margin-bottom: 10px; 
+    line-height: 1.35; 
+}
 
 .badge {
     display: inline-block;
@@ -137,7 +186,10 @@ body {
 .badge-yellow { background-color: #d97706; }
 .badge-green { background-color: #16a34a; }
 
-/* CENTRAL: FORMULARIO PRINCIPAL BLANCO */
+/* ==========================================================================
+   7. FORMULARIO PRINCIPAL CENTRAL (main-card)
+   Contenedor blanco con cabecera en degradado y campos alineados
+   ========================================================================== */
 .main-card {
     flex: 1;
     background: var(--card-bg);
@@ -147,6 +199,7 @@ body {
     border: 1px solid #e2e8f0;
 }
 
+/* Encabezado con logos institucionales */
 .header-container {
     background: var(--gradient-bg);
     color: white;
@@ -157,7 +210,12 @@ body {
     gap: 12px;
 }
 
-.logo-box { flex: 0 0 130px; display: flex; align-items: center; }
+.logo-box { 
+    flex: 0 0 130px; 
+    display: flex; 
+    align-items: center; 
+}
+
 .logo-left { justify-content: flex-start; }
 .logo-right { justify-content: flex-end; }
 
@@ -172,7 +230,10 @@ body {
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
 
-.header-title { flex: 1; text-align: center; }
+.header-title { 
+    flex: 1; 
+    text-align: center; 
+}
 
 .sub-badge {
     background: rgba(255, 255, 255, 0.2);
@@ -196,23 +257,53 @@ body {
     text-transform: uppercase;
 }
 
-.header-title p { font-size: 0.78rem; color: #cbd5e1; margin: 0; }
+.header-title p { 
+    font-size: 0.78rem; 
+    color: #cbd5e1; 
+    margin: 0; 
+}
 
-.form-body { padding: 25px 20px; }
-.form-group { margin-bottom: 16px; position: relative; }
-.form-row-3 { display: flex; gap: 10px; }
-.col-third { flex: 1; }
+/* ==========================================================================
+   8. CUERPO DEL FORMULARIO Y CAMPOS DE ENTRADA
+   Márgenes, tipografía de etiquetas y cajas de texto
+   ========================================================================== */
+.form-body { 
+    padding: 25px 20px; /* Margen interno de todo el formulario */
+}
 
+.form-group { 
+    margin-bottom: 18px; 
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fila de 3 columnas para Marca, Modelo y Serie */
+.form-row-3 { 
+    display: flex; 
+    gap: 10px; 
+}
+
+.col-third { 
+    flex: 1; 
+}
+
+/* Etiquetas de títulos de campos */
 label {
     display: block;
     font-weight: 600;
-    margin-bottom: 5px;
+    margin-bottom: 8px; /* Espacio uniforme antes de cada caja */
     font-size: 0.85rem;
     color: var(--text-main);
+    text-align: left;
 }
 
-.required { color: #dc2626; font-weight: bold; }
+.required { 
+    color: #dc2626; 
+    font-weight: bold; 
+}
 
+/* Estilo unificado para inputs, desplegables y áreas de texto */
 input, select, textarea {
     width: 100%;
     padding: 10px 12px;
@@ -225,12 +316,14 @@ input, select, textarea {
     transition: all 0.2s ease-in-out;
 }
 
+/* Efecto de foco al hacer clic en un campo */
 input:focus, select:focus, textarea:focus {
     background-color: #ffffff;
     border-color: var(--accent-blue);
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
 
+/* Menú desplegable para búsqueda de establecimientos de salud */
 .search-results {
     position: absolute;
     top: 100%;
@@ -259,6 +352,7 @@ input:focus, select:focus, textarea:focus {
     font-weight: 600;
 }
 
+/* Botón principal de registro y envío */
 button {
     width: 100%;
     background: linear-gradient(135deg, #16a34a, #15803d);
@@ -280,11 +374,16 @@ button:hover {
     transform: translateY(-1px);
 }
 
-/* PANTALLA DE CARGA (OVERLAY SPINNER) */
+/* ==========================================================================
+   9. OVERLAY DE CARGA (Pantalla de espera mientras envía)
+   ========================================================================== */
 .overlay-loading {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
     background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(6px);
     z-index: 9999;
@@ -310,11 +409,16 @@ button:hover {
     to { transform: rotate(360deg); }
 }
 
-/* MODAL / POPUP DE ÉXITO CON BOTÓN REINICIAR */
+/* ==========================================================================
+   10. MODAL DE ÉXITO (Confirmación de envío)
+   ========================================================================== */
 .modal-exito {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
     background: rgba(15, 23, 42, 0.85);
     backdrop-filter: blur(6px);
     z-index: 10000;
@@ -367,26 +471,29 @@ button:hover {
     background: #15803d !important;
 }
 
-/* AJUSTES PARA CELULARES Y TABLETS (ORDEN PRIORITARIO) */
+/* ==========================================================================
+   11. ADAPTACIÓN RESPONSIVA (Móviles y Tablets)
+   Reordena la vista: 1. Formulario, 2. Guía, 3. Leyenda
+   ========================================================================== */
 @media (max-width: 1300px) {
     .layout-wrapper {
         flex-direction: column;
     }
 
-    /* EL FORMULARIO PASA A PRIMER LUGAR EN CELULARES */
+    /* En pantallas móviles el formulario se prioriza arriba */
     .main-card {
         order: 1;
         width: 100%;
     }
 
-    /* LA GUÍA PASA A SEGUNDO LUGAR */
+    /* La guía técnica baja al segundo lugar */
     .sidebar-left {
         order: 2;
         flex: none;
         width: 100%;
     }
 
-    /* LA LEYENDA PASA A TERCER LUGAR */
+    /* Las leyendas bajan al tercer lugar */
     .sidebar-right {
         order: 3;
         flex: none;
