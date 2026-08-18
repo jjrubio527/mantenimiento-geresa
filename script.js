@@ -1,4 +1,11 @@
-// LISTA OFICIAL DE ESTABLECIMIENTOS DE SALUD GERESA LAMBAYEQUE (199 EE.SS.)
+/**
+ * =========================================================================
+ * SISTEMA WEB DE REPORTES - UFMIES GERESA LAMBAYEQUE
+ * Lógica Frontend, Búsqueda de EE.SS., Compresión de Imagen y Envío a Sheets
+ * =========================================================================
+ */
+
+// 1. LISTA OFICIAL DE ESTABLECIMIENTOS DE SALUD (199 EE.SS. GERESA LAMBAYEQUE)
 const eessLista = [
     // 1. RED DE SALUD CHICLAYO
     "P.S. GUAYAQUIL", "C.S. CAYALTI", "HOSPITAL REGIONAL DOCENTE LAS MERCEDES", "C.S. JOSE QUIÑONEZ GONZALES", "C.S. CRUZ DE LA ESPERANZA",
@@ -42,19 +49,31 @@ const eessLista = [
     "P.S. LOS SANCHEZ", "C.S. TUCUME"
 ];
 
-const input = document.getElementById('eessInput');
+// 2. URL DEL WEB APP DE GOOGLE APPS SCRIPT
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwVc4xurVEl4JH5IDuZd-It7yK5abau3tCb6CUpkHyuZjNwU-5Z1U2LGs4LRxKKzEzD/exec';
+
+// 3. REFERENCIAS A ELEMENTOS DEL DOM
+const inputEESS = document.getElementById('eessInput');
 const results = document.getElementById('searchResults');
 const loadingOverlay = document.getElementById('loadingOverlay');
 const modalExito = document.getElementById('modalExito');
 const btnNuevoRegistro = document.getElementById('btnNuevoRegistro');
+const inputCamara = document.getElementById('inputCamara');
+const inputGaleria = document.getElementById('inputGaleria');
+const nombreFoto = document.getElementById('nombreFotoSeleccionada');
+const selectCategoria = document.getElementById('categoria');
+const seccionEquipos = document.getElementById('camposEquipos');
+const seccionInfra = document.getElementById('camposInfra');
 
-// QUITAR TILDES
+// FUNCIÓN AUXILIAR: Normaliza texto eliminando acentos y tildes
 function quitarTildes(texto) {
     return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 }
 
-// BUSCADOR EN TIEMPO REAL
-input.addEventListener('input', function() {
+// =========================================================================
+// 4. AUTOCOMPLETADO Y FILTRADO EN TIEMPO REAL DEL ESTABLECIMIENTO DE SALUD
+// =========================================================================
+inputEESS.addEventListener('input', function() {
     const rawVal = this.value;
     const val = quitarTildes(rawVal.toLowerCase().trim());
     results.innerHTML = '';
@@ -73,18 +92,19 @@ input.addEventListener('input', function() {
             const div = document.createElement('div');
             div.textContent = item;
             div.onclick = function() {
-                input.value = item;
+                inputEESS.value = item;
                 results.style.display = 'none';
             };
             results.appendChild(div);
         });
     } else {
+        // Opción dinámica si el establecimiento no está en la lista oficial
         const div = document.createElement('div');
         div.innerHTML = `➕ Usar: <strong>"${rawVal}"</strong> (No figura en la lista)`;
         div.style.color = '#2563eb';
         div.style.fontWeight = 'bold';
         div.onclick = function() {
-            input.value = rawVal;
+            inputEESS.value = rawVal;
             results.style.display = 'none';
         };
         results.appendChild(div);
@@ -93,32 +113,48 @@ input.addEventListener('input', function() {
     results.style.display = 'block';
 });
 
-// OCULTAR AL HACER CLIC FUERA
+// Oculta la lista desplegable al hacer clic fuera del buscador
 document.addEventListener('click', function(e) {
-    if (e.target !== input) {
+    if (e.target !== inputEESS) {
         results.style.display = 'none';
     }
 });
 
-// URL DE TU GOOGLE APPS SCRIPT
-const scriptURL = 'https://script.google.com/macros/s/AKfycbwVc4xurVEl4JH5IDuZd-It7yK5abau3tCb6CUpkHyuZjNwU-5Z1U2LGs4LRxKKzEzD/exec';
+// =========================================================================
+// 5. VISIBILIDAD CONDICIONAL: EQUIPOS VS. INFRAESTRUCTURA
+// =========================================================================
+selectCategoria.addEventListener('change', () => {
+    const valorSeleccionado = selectCategoria.value;
 
-// MOSTRAR NOMBRE DE LA FOTO SELECCIONADA
-document.getElementById('inputCamara').addEventListener('change', function() {
-    if (this.files[0]) {
-        document.getElementById('inputGaleria').value = ''; 
-        document.getElementById('nombreFotoSeleccionada').textContent = '📸 Foto tomada: ' + this.files[0].name;
+    if (valorSeleccionado === 'Infraestructura') {
+        seccionEquipos.style.display = 'none';
+        seccionInfra.style.display = 'block';
+    } else {
+        seccionEquipos.style.display = 'block';
+        seccionInfra.style.display = 'none';
     }
 });
 
-document.getElementById('inputGaleria').addEventListener('change', function() {
+// =========================================================================
+// 6. GESTIÓN DE BOTONES PARA ADJUNTAR FOTO (CÁMARA / GALERÍA)
+// =========================================================================
+inputCamara.addEventListener('change', function() {
     if (this.files[0]) {
-        document.getElementById('inputCamara').value = ''; 
-        document.getElementById('nombreFotoSeleccionada').textContent = '🖼️ Imagen seleccionada: ' + this.files[0].name;
+        inputGaleria.value = ''; 
+        nombreFoto.textContent = '📸 Foto tomada: ' + this.files[0].name;
     }
 });
 
-// COMPRESIÓN COMPATIBLE CON MÓVILES (ANDROID Y IPHONE)
+inputGaleria.addEventListener('change', function() {
+    if (this.files[0]) {
+        inputCamara.value = ''; 
+        nombreFoto.textContent = '🖼️ Imagen seleccionada: ' + this.files[0].name;
+    }
+});
+
+// =========================================================================
+// 7. COMPRESIÓN Y CONVERSIÓN DE FOTO A BASE64 (OPTIMIZADA PARA MÓVILES)
+// =========================================================================
 function procesarFotoMovil(file, callback) {
     const reader = new FileReader();
     reader.onerror = function() { callback(null); };
@@ -130,7 +166,7 @@ function procesarFotoMovil(file, callback) {
                 const canvas = document.createElement('canvas');
                 let width = img.width;
                 let height = img.height;
-                const maxDim = 1000; // Reduce a un tamaño muy liviano y óptimo para celulares
+                const maxDim = 1000; // Redimensiona a un tamaño ligero para transferencia rápida
 
                 if (width > height) {
                     if (width > maxDim) {
@@ -149,12 +185,13 @@ function procesarFotoMovil(file, callback) {
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(img, 0, 0, width, height);
 
+                // Compresión en calidad JPEG 60%
                 const dataUrl = canvas.toDataURL('image/jpeg', 0.6);
                 const base64Data = dataUrl.split(',')[1];
 
                 callback({
                     base64: base64Data,
-                    nombre: "foto_" + Date.now() + ".jpg",
+                    nombre: "evidencia_" + Date.now() + ".jpg",
                     type: "image/jpeg"
                 });
             } catch (err) {
@@ -166,51 +203,71 @@ function procesarFotoMovil(file, callback) {
     reader.readAsDataURL(file);
 }
 
-// ENVÍO DIRECTO A GOOGLE SHEETS
+// =========================================================================
+// 8. ENVÍO DEL FORMULARIO A GOOGLE SHEETS VÍA POST
+// =========================================================================
 document.getElementById('mantenimientoForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
+    // Activa la animación de carga
     loadingOverlay.style.display = 'flex';
 
-    const inputCamara = document.getElementById('inputCamara');
-    const inputGaleria = document.getElementById('inputGaleria');
     const file = (inputCamara && inputCamara.files && inputCamara.files[0]) ? inputCamara.files[0] : 
                  ((inputGaleria && inputGaleria.files && inputGaleria.files[0]) ? inputGaleria.files[0] : null);
 
-    function enviarPayload(fotoInfo) {
-        const formData = {
-            eess: document.getElementById('eessInput').value,
-            sisgedo: document.getElementById('sisgedo').value,
-            categoria: document.getElementById('categoria').value,
-            equipo: document.getElementById('equipo').value,
-            marca: document.getElementById('marca').value || 'N/A',
-            modelo: document.getElementById('modelo').value || 'N/A',
-            codigo: document.getElementById('codigo').value || 'N/A',
-            condicion: document.getElementById('condicion').value,
-            descripcion: document.getElementById('descripcion').value,
-            prioridad: document.getElementById('prioridad').value,
-            telefono: document.getElementById('telefono').value,
-            archivo: fotoInfo ? fotoInfo.base64 : '',
-            nombreArchivo: fotoInfo ? fotoInfo.nombre : '',
-            mimeType: fotoInfo ? fotoInfo.type : ''
-        };
+    // Función interna que arma el JSON final y lo despacha al Web App de Apps Script
+    // Dentro de tu evento submit en script.js, actualiza la función enviarPayload:
 
-        fetch(scriptURL, {
+async function enviarPayload(fotoInfo) {
+    const cat = selectCategoria.value;
+    const esInfra = (cat === 'Infraestructura');
+
+    const formData = {
+        redSalud: document.getElementById('redSalud').value,
+        eess: inputEESS.value,
+        sisgedo: document.getElementById('sisgedo').value,
+        categoria: cat,
+        equipo: esInfra ? document.getElementById('areaAmbiente').value : document.getElementById('equipo').value,
+        marca: esInfra ? 'N/A' : (document.getElementById('marca').value || 'N/A'),
+        modelo: esInfra ? 'N/A' : (document.getElementById('modelo').value || 'N/A'),
+        codigo: esInfra ? 'N/A' : (document.getElementById('codigo').value || 'N/A'),
+        detalleInfra: esInfra ? document.getElementById('detalleInfra').value : 'N/A',
+        estadoBien: document.getElementById('estado_bien').value,
+        descripcion: document.getElementById('descripcion').value,
+        prioridad: document.getElementById('prioridad').value,
+        telefono: document.getElementById('telefono').value,
+        archivo: fotoInfo ? fotoInfo.base64 : '',
+        nombreArchivo: fotoInfo ? fotoInfo.nombre : '',
+        mimeType: fotoInfo ? fotoInfo.type : ''
+    };
+
+    try {
+        const response = await fetch(scriptURL, {
             method: 'POST',
-            mode: 'no-cors',
             headers: { 'Content-Type': 'text/plain;charset=utf-8' },
             body: JSON.stringify(formData)
-        })
-        .then(() => {
-            loadingOverlay.style.display = 'none';
-            modalExito.style.display = 'flex';
-        })
-        .catch(error => {
-            loadingOverlay.style.display = 'none';
-            alert('Ocurrió un error al enviar el reporte. Por favor reintente.');
         });
-    }
 
+        const resultado = await response.json();
+
+        loadingOverlay.style.display = 'none';
+
+        if (resultado.status === 'success') {
+            modalExito.style.display = 'flex';
+        } else if (resultado.tipo === 'DUPLICADO') {
+            alert('⚠️ ATENCIÓN: ' + resultado.mensaje);
+        } else {
+            alert('Ocurrió un error: ' + resultado.mensaje);
+        }
+
+    } catch (error) {
+        loadingOverlay.style.display = 'none';
+        console.error('Error en la petición:', error);
+        alert('Hubo un problema de conexión con el servidor. Intente nuevamente.');
+    }
+}
+
+    // Si el usuario adjuntó foto, primero se comprime; si no, se envía directamente
     if (file) {
         procesarFotoMovil(file, function(fotoInfo) {
             enviarPayload(fotoInfo);
@@ -220,10 +277,16 @@ document.getElementById('mantenimientoForm').addEventListener('submit', function
     }
 });
 
-// BOTÓN PARA REGISTRAR OTRO REPORTE
+// =========================================================================
+// 9. BOTÓN PARA REGISTRAR OTRO REPORTE (REINICIO)
+// =========================================================================
 btnNuevoRegistro.addEventListener('click', function() {
     document.getElementById('mantenimientoForm').reset();
-    document.getElementById('nombreFotoSeleccionada').textContent = '';
+    inputCamara.value = '';
+    inputGaleria.value = '';
+    nombreFoto.textContent = '';
+    seccionEquipos.style.display = 'block';
+    seccionInfra.style.display = 'none';
     modalExito.style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
